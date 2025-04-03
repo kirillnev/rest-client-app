@@ -1,3 +1,5 @@
-export default async function signup() {
-  return <section>signup</section>;
+import { AuthForm } from '@/components/auth/AuthForm';
+
+export default function SignUpPage() {
+  return <AuthForm mode="signup" />;
 }
