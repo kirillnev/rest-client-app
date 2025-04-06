@@ -1,10 +1,10 @@
-import { AuthForm } from '@/components/auth/AuthForm';
 import RedirectIfAuthenticated from '@/components/auth/RedirectIfAuthenticated';
+import { SignInForm } from '@/components/auth/SignInForm';
 
 export default function SignInPage() {
   return (
     <RedirectIfAuthenticated>
-      <AuthForm mode="signin" />
+      <SignInForm />
     </RedirectIfAuthenticated>
   );
 }

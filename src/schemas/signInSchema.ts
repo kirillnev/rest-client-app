@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const authSchema = z.object({
+export const signInSchema = z.object({
   email: z.string().email('Invalid email format'),
   password: z
     .string()
@@ -10,4 +10,4 @@ export const authSchema = z.object({
     .regex(/[@$!%*?&]/, 'Password must contain a special character'),
 });
 
-export type AuthSchemaType = z.infer<typeof authSchema>;
+export type SignInSchemaType = z.infer<typeof signInSchema>;
