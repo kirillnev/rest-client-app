@@ -30,14 +30,17 @@ export const AuthForm = ({ mode }: AuthFormProps) => {
         const { error } = await supabase.auth.signUp({ email, password });
         authError = error;
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
         authError = error;
       }
 
       if (authError) {
         setError(authError.message);
       } else {
-        router.push('/');
+        router.push('/client');
       }
     } catch (err) {
       if (err instanceof ZodError) {
@@ -66,9 +69,7 @@ export const AuthForm = ({ mode }: AuthFormProps) => {
         required
       />
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <button type="submit">
-        {mode === 'signin' ? 'Sign In' : 'Sign Up'}
-      </button>
+      <button type="submit">{mode === 'signin' ? 'Sign In' : 'Sign Up'}</button>
     </form>
   );
 };
