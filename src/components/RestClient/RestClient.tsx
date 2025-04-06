@@ -4,6 +4,7 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import './styles.css';
 import { RestRequest } from '@/types';
 import { prettifyJson } from '@/utils/prettifyJson';
+import { useSendRequest } from './hooks/useSendRequest';
 
 const RestClient = () => {
   const { register, handleSubmit, control, watch, getValues, setValue } =
@@ -22,8 +23,11 @@ const RestClient = () => {
     name: 'headers',
   });
 
+  const { isLoading, error, responseStatus, responseData, sendRequest } =
+    useSendRequest();
+
   const onSubmit = (data: RestRequest) => {
-    console.log(data);
+    sendRequest(data);
   };
 
   const handlePrettify = () => {
@@ -33,70 +37,87 @@ const RestClient = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="rest-client-form">
-      <div className="method-url-row">
-        <select {...register('method')}>
-          <option value="GET">GET</option>
-          <option value="POST">POST</option>
-          <option value="PUT">PUT</option>
-          <option value="DELETE">DELETE</option>
-          <option value="PATCH">PATCH</option>
-        </select>
-        <input {...register('url')} placeholder="Enter URL" />
-      </div>
+      <fieldset disabled={isLoading}>
+        <div className="method-url-row">
+          <select {...register('method')}>
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="PUT">PUT</option>
+            <option value="DELETE">DELETE</option>
+            <option value="PATCH">PATCH</option>
+          </select>
+          <input {...register('url')} placeholder="Enter URL" />
+        </div>
 
-      <div className="headers-block">
-        {fields.map((field, index) => (
-          <div key={field.id} className="header-row">
-            <input {...register(`headers.${index}.key`)} placeholder="Key" />
-            <input
-              {...register(`headers.${index}.value`)}
-              placeholder="Value"
-            />
-
-            {fields.length > 1 && (
-              <button
-                type="button"
-                onClick={() => remove(index)}
-                className="icon-button remove"
+        <div className="headers-block">
+          {fields.map((field, index) => (
+            <div key={field.id} className="header-row">
+              <input {...register(`headers.${index}.key`)} placeholder="Key" />
+              <input
+                {...register(`headers.${index}.value`)}
+                placeholder="Value"
               />
-            )}
-          </div>
-        ))}
+              {fields.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => remove(index)}
+                  className="icon-button remove"
+                />
+              )}
+            </div>
+          ))}
 
-        <button
-          type="button"
-          onClick={() => append({ key: '', value: '' })}
-          className="add-link"
-        >
-          Add header
-        </button>
-      </div>
-
-      <div className="body-type-row">
-        <label>
-          <input
-            type="radio"
-            value="text"
-            {...register('bodyType')}
-            defaultChecked
-          />
-          Text
-        </label>
-        <label>
-          <input type="radio" value="json" {...register('bodyType')} />
-          JSON
-        </label>
-
-        {watch('bodyType') === 'json' && (
-          <button type="button" onClick={handlePrettify}>
-            Prettify
+          <button
+            type="button"
+            onClick={() => append({ key: '', value: '' })}
+            className="add-link"
+          >
+            Add header
           </button>
-        )}
-      </div>
-      <div className="body-row">
-        <textarea {...register('body')} placeholder="Request Body" />
-      </div>
-      <button type="submit">Send</button>
+        </div>
+
+        <div className="body-type-row">
+          <label>
+            <input
+              type="radio"
+              value="text"
+              {...register('bodyType')}
+              defaultChecked
+            />
+            Text
+          </label>
+          <label>
+            <input type="radio" value="json" {...register('bodyType')} />
+            JSON
+          </label>
+
+          {watch('bodyType') === 'json' && (
+            <button type="button" onClick={handlePrettify}>
+              Prettify
+            </button>
+          )}
+        </div>
+
+        <div className="body-row">
+          <textarea {...register('body')} placeholder="Request Body" />
+        </div>
+
+        <button type="submit">{isLoading ? 'Sending...' : 'Send'}</button>
+      </fieldset>
+
+      {error && <div className="error">Error: {error}</div>}
+      {responseStatus && (
+        <div className="response-block">
+          <div className="response-status">Status: {responseStatus}</div>
+          {responseData && (
+            <pre>
+              {typeof responseData === 'string'
+                ? responseData
+                : JSON.stringify(responseData, null, 2)}
+            </pre>
+          )}
+        </div>
+      )}
     </form>
   );
 };

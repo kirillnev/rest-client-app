@@ -10,6 +10,12 @@
     font-family: sans-serif;
 }
 
+.rest-client-form fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
 .rest-client-form select,
 .rest-client-form input,
 .rest-client-form textarea {
@@ -108,4 +114,20 @@
     display: flex;
     gap: 16px;
     align-items: center;
+}
+
+.response-block {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.response-status {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #333;
 }
