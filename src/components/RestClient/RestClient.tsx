@@ -5,6 +5,8 @@ import './styles.css';
 import { RestRequest } from '@/types';
 import { prettifyJson } from '@/utils/prettifyJson';
 import { useSendRequest } from './hooks/useSendRequest';
+import GeneratedCode from '@/components/GeneratedCode';
+import ResponseBlock from '@/components/ResponseBlock';
 
 const RestClient = () => {
   const { register, handleSubmit, control, watch, getValues, setValue } =
@@ -34,6 +36,8 @@ const RestClient = () => {
     const pretty = prettifyJson(getValues('body'));
     if (pretty) setValue('body', pretty);
   };
+
+  const watchedRequest = watch();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="rest-client-form">
@@ -105,19 +109,13 @@ const RestClient = () => {
         <button type="submit">{isLoading ? 'Sending...' : 'Send'}</button>
       </fieldset>
 
-      {error && <div className="error">Error: {error}</div>}
-      {responseStatus && (
-        <div className="response-block">
-          <div className="response-status">Status: {responseStatus}</div>
-          {responseData && (
-            <pre>
-              {typeof responseData === 'string'
-                ? responseData
-                : JSON.stringify(responseData, null, 2)}
-            </pre>
-          )}
-        </div>
-      )}
+      <GeneratedCode request={watchedRequest} />
+
+      {error ? (
+        <div className="error">Error: {error}</div>
+      ) : responseStatus ? (
+        <ResponseBlock status={responseStatus} data={responseData} />
+      ) : null}
     </form>
   );
 };
