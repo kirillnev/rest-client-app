@@ -1,13 +1,11 @@
 import { useState } from 'react';
-import { RestRequest } from '@/types';
-
-type ResponseData = string | Record<string, unknown>;
+import { ResponseDataType, RestRequest } from '@/types';
 
 type UseSendRequestReturn = {
   isLoading: boolean;
   error: string | null;
   responseStatus: number | null;
-  responseData: ResponseData | null;
+  responseData: ResponseDataType;
   sendRequest: (data: RestRequest) => Promise<void>;
 };
 
@@ -15,7 +13,7 @@ export const useSendRequest = (): UseSendRequestReturn => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [responseStatus, setResponseStatus] = useState<number | null>(null);
-  const [responseData, setResponseData] = useState<ResponseData | null>(null);
+  const [responseData, setResponseData] = useState<ResponseDataType>(null);
 
   const sendRequest = async (data: RestRequest) => {
     setIsLoading(true);
@@ -39,7 +37,7 @@ export const useSendRequest = (): UseSendRequestReturn => {
       setResponseStatus(res.status);
 
       const contentType = res.headers.get('content-type') || '';
-      const parsed: ResponseData = contentType.includes('application/json')
+      const parsed: ResponseDataType = contentType.includes('application/json')
         ? await res.json()
         : await res.text();
 

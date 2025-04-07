@@ -12,3 +12,5 @@ export type RestRequest = {
   body: string;
   bodyType: 'json' | 'text';
 };
+
+export type ResponseDataType = string | Record<string, unknown> | null;
