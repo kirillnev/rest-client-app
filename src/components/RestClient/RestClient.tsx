@@ -1,122 +1,36 @@
 'use client';
 
-import { useFieldArray, useForm } from 'react-hook-form';
-import './styles.css';
-import { RestRequest } from '@/types';
-import { prettifyJson } from '@/utils/prettifyJson';
-import { useSendRequest } from './hooks/useSendRequest';
+import '@/styles.css';
 import GeneratedCode from '@/components/GeneratedCode';
 import ResponseBlock from '@/components/ResponseBlock';
+import RequestForm from '@/components/RequestForm';
+import { useRestClient } from './hooks/useRestClient';
 
 const RestClient = () => {
-  const { register, handleSubmit, control, watch, getValues, setValue } =
-    useForm<RestRequest>({
-      defaultValues: {
-        method: 'GET',
-        url: '',
-        body: '',
-        bodyType: 'text',
-        headers: [{ key: '', value: '' }],
-      },
-    });
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: 'headers',
-  });
-
-  const { isLoading, error, responseStatus, responseData, sendRequest } =
-    useSendRequest();
-
-  const onSubmit = (data: RestRequest) => {
-    sendRequest(data);
-  };
-
-  const handlePrettify = () => {
-    const pretty = prettifyJson(getValues('body'));
-    if (pretty) setValue('body', pretty);
-  };
-
-  const watchedRequest = watch();
+  const {
+    form,
+    isLoading,
+    error,
+    responseStatus,
+    responseData,
+    watchedRequest,
+    handleFormSubmit,
+  } = useRestClient();
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="rest-client-form">
-      <fieldset disabled={isLoading}>
-        <div className="method-url-row">
-          <select {...register('method')}>
-            <option value="GET">GET</option>
-            <option value="POST">POST</option>
-            <option value="PUT">PUT</option>
-            <option value="DELETE">DELETE</option>
-            <option value="PATCH">PATCH</option>
-          </select>
-          <input {...register('url')} placeholder="Enter URL" />
-        </div>
-
-        <div className="headers-block">
-          {fields.map((field, index) => (
-            <div key={field.id} className="header-row">
-              <input {...register(`headers.${index}.key`)} placeholder="Key" />
-              <input
-                {...register(`headers.${index}.value`)}
-                placeholder="Value"
-              />
-              {fields.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => remove(index)}
-                  className="icon-button remove"
-                />
-              )}
-            </div>
-          ))}
-
-          <button
-            type="button"
-            onClick={() => append({ key: '', value: '' })}
-            className="add-link"
-          >
-            Add header
-          </button>
-        </div>
-
-        <div className="body-type-row">
-          <label>
-            <input
-              type="radio"
-              value="text"
-              {...register('bodyType')}
-              defaultChecked
-            />
-            Text
-          </label>
-          <label>
-            <input type="radio" value="json" {...register('bodyType')} />
-            JSON
-          </label>
-
-          {watch('bodyType') === 'json' && (
-            <button type="button" onClick={handlePrettify}>
-              Prettify
-            </button>
-          )}
-        </div>
-
-        <div className="body-row">
-          <textarea {...register('body')} placeholder="Request Body" />
-        </div>
-
-        <button type="submit">{isLoading ? 'Sending...' : 'Send'}</button>
-      </fieldset>
-
+    <div className="rest-client">
+      <RequestForm
+        form={form}
+        isLoading={isLoading}
+        onSubmit={handleFormSubmit}
+      />
       <GeneratedCode request={watchedRequest} />
-
       {error ? (
         <div className="error">Error: {error}</div>
       ) : responseStatus ? (
         <ResponseBlock status={responseStatus} data={responseData} />
       ) : null}
-    </form>
+    </div>
   );
 };
 
