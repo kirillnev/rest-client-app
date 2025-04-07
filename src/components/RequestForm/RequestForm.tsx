@@ -1,6 +1,6 @@
-import { UseFormReturn, useFieldArray } from 'react-hook-form';
+import { UseFormReturn } from 'react-hook-form';
 import { RestRequest } from '@/types';
-import { prettifyJson } from '@/utils/prettifyJson';
+import { useRequestForm } from './hooks/useRequestForm';
 
 type Props = {
   form: UseFormReturn<RestRequest>;
@@ -9,19 +9,9 @@ type Props = {
 };
 
 const RequestForm = ({ form, onSubmit, isLoading }: Props) => {
-  const { register, control, watch, getValues, setValue } = form;
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: 'headers',
-  });
-
-  const watchedBodyType = watch('bodyType');
-
-  const handlePrettify = () => {
-    const pretty = prettifyJson(getValues('body'));
-    if (pretty) setValue('body', pretty);
-  };
+  const { register } = form;
+  const { fields, append, remove, watchedBodyType, handlePrettify } =
+    useRequestForm(form);
 
   return (
     <form onSubmit={onSubmit} className="request-form">
