@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ResponseDataType, RestRequest } from '@/types';
+import { buildApiProxyUrl } from '@/utils/buildApiProxyUrl';
 
 type UseSendRequestReturn = {
   isLoading: boolean;
@@ -22,17 +23,8 @@ export const useSendRequest = (): UseSendRequestReturn => {
     setResponseData(null);
 
     try {
-      const parsedBody =
-        data.bodyType === 'json' ? JSON.parse(data.body) : data.body;
-
-      const res = await fetch('/api/proxy', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...data,
-          body: parsedBody,
-        }),
-      });
+      const url = buildApiProxyUrl(data);
+      const res = await fetch(url, { method: 'GET' });
 
       setResponseStatus(res.status);
 

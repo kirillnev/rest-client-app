@@ -4,7 +4,7 @@ import { useRequestForm } from './hooks/useRequestForm';
 
 type Props = {
   form: UseFormReturn<RestRequest>;
-  onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
+  onSubmit: (data: RestRequest) => Promise<void>;
   isLoading: boolean;
 };
 
@@ -14,7 +14,7 @@ const RequestForm = ({ form, onSubmit, isLoading }: Props) => {
     useRequestForm(form);
 
   return (
-    <form onSubmit={onSubmit} className="request-form">
+    <form onSubmit={form.handleSubmit(onSubmit)} className="rest-client-form">
       <fieldset disabled={isLoading}>
         <div className="method-url-row">
           <select {...register('method')}>

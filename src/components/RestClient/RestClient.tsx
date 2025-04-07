@@ -1,6 +1,5 @@
 'use client';
 
-import '@/styles.css';
 import GeneratedCode from '@/components/GeneratedCode';
 import ResponseBlock from '@/components/ResponseBlock';
 import RequestForm from '@/components/RequestForm';

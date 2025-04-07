@@ -17,8 +17,8 @@ export const useRestClient = () => {
   const { isLoading, error, responseStatus, responseData, sendRequest } =
     useSendRequest();
 
-  const onSubmit = (data: RestRequest) => {
-    sendRequest(data);
+  const onSubmit = async (data: RestRequest) => {
+    await sendRequest(data);
   };
 
   return {
