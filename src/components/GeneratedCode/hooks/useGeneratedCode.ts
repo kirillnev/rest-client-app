@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { RestRequest } from '@/types';
-import { getCodeSnippet } from '@/utils/codegen';
+import { generateCode } from '@/utils/codegen';
 
 const languages = [
   'curl',
@@ -18,18 +18,7 @@ export const useGeneratedCode = (request: RestRequest) => {
   const [code, setCode] = useState('');
 
   useEffect(() => {
-    if (!request.method || !request.url) {
-      setCode('Not enough data to generate code.');
-      return;
-    }
-
-    getCodeSnippet({
-      method: request.method,
-      url: request.url,
-      headers: request.headers,
-      body: request.body,
-      language,
-    }).then(setCode);
+    generateCode(request, language).then(setCode);
   }, [request, language]);
 
   return {

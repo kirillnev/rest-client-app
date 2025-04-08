@@ -13,7 +13,6 @@ export const useRestClient = () => {
     },
   });
 
-  const { handleSubmit, watch } = form;
   const { isLoading, error, responseStatus, responseData, sendRequest } =
     useSendRequest();
 
@@ -27,7 +26,6 @@ export const useRestClient = () => {
     error,
     responseStatus,
     responseData,
-    watchedRequest: watch(),
-    handleFormSubmit: handleSubmit(onSubmit),
+    onSubmit,
   };
 };

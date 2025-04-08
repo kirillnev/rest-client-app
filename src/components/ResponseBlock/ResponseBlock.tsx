@@ -10,10 +10,11 @@ const ResponseBlock = ({ status, data }: Props) => {
   const content = data ? JSON.stringify(data, null, 2) : null;
 
   return (
-    <div className="response-block">
-      <div className="response-status">Status: {status}</div>
-      {data && <pre>{content}</pre>}
-    </div>
+    <textarea
+      rows={10}
+      value={`Status: ${status}\n\n${content ?? ''}`}
+      readOnly
+    />
   );
 };
 

@@ -1,16 +1,8 @@
 import { useState } from 'react';
-import { ResponseDataType, RestRequest } from '@/types';
-import { buildApiProxyUrl } from '@/utils/buildApiProxyUrl';
+import { RestRequest, ResponseDataType } from '@/types';
+import { sendRequestRaw } from '@/utils/requestUtils';
 
-type UseSendRequestReturn = {
-  isLoading: boolean;
-  error: string | null;
-  responseStatus: number | null;
-  responseData: ResponseDataType;
-  sendRequest: (data: RestRequest) => Promise<void>;
-};
-
-export const useSendRequest = (): UseSendRequestReturn => {
+export const useSendRequest = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [responseStatus, setResponseStatus] = useState<number | null>(null);
@@ -23,17 +15,9 @@ export const useSendRequest = (): UseSendRequestReturn => {
     setResponseData(null);
 
     try {
-      const url = buildApiProxyUrl(data);
-      const res = await fetch(url, { method: 'GET' });
-
-      setResponseStatus(res.status);
-
-      const contentType = res.headers.get('content-type') || '';
-      const parsed: ResponseDataType = contentType.includes('application/json')
-        ? await res.json()
-        : await res.text();
-
-      setResponseData(parsed);
+      const { status, body } = await sendRequestRaw(data);
+      setResponseStatus(status);
+      setResponseData(body);
     } catch (err) {
       setError((err as Error).message);
     } finally {

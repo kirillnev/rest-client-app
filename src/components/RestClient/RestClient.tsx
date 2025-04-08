@@ -6,24 +6,13 @@ import RequestForm from '@/components/RequestForm';
 import { useRestClient } from './hooks/useRestClient';
 
 const RestClient = () => {
-  const {
-    form,
-    isLoading,
-    error,
-    responseStatus,
-    responseData,
-    watchedRequest,
-    handleFormSubmit,
-  } = useRestClient();
+  const { form, isLoading, error, responseStatus, responseData, onSubmit } =
+    useRestClient();
 
   return (
     <div className="rest-client">
-      <RequestForm
-        form={form}
-        isLoading={isLoading}
-        onSubmit={handleFormSubmit}
-      />
-      <GeneratedCode request={watchedRequest} />
+      <RequestForm form={form} isLoading={isLoading} onSubmit={onSubmit} />
+      <GeneratedCode request={form.watch()} />
       {error ? (
         <div className="error">Error: {error}</div>
       ) : responseStatus ? (

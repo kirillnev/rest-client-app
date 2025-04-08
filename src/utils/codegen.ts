@@ -1,16 +1,8 @@
 import sdk from 'postman-collection';
 import codegen from 'postman-code-generators';
-import { RequestHeader } from '@/types';
+import { RestRequest } from '@/types';
 
-interface Params {
-  method: string;
-  url: string;
-  headers: RequestHeader[];
-  body: string;
-  language: string;
-}
-
-const langMap: { [key: string]: { language: string; variant: string } } = {
+const langMap = {
   curl: { language: 'curl', variant: 'cURL' },
   'javascript-fetch': { language: 'javascript', variant: 'Fetch' },
   'javascript-xhr': { language: 'javascript', variant: 'XHR' },
@@ -19,29 +11,21 @@ const langMap: { [key: string]: { language: string; variant: string } } = {
   java: { language: 'java', variant: 'OkHttp' },
   go: { language: 'go', variant: 'Native' },
   csharp: { language: 'csharp', variant: 'HttpClient' },
-};
+} as const;
 
-export async function getCodeSnippet({
-  method,
-  url,
-  headers,
-  body,
-  language,
-}: Params): Promise<string> {
+type LanguageKey = keyof typeof langMap;
+
+const convertRequestToCode = async (
+  request: sdk.Request,
+  language: LanguageKey
+): Promise<string> => {
+  const { language: lang, variant } = langMap[language];
+
   return new Promise((resolve) => {
-    const postmanRequest = new sdk.Request({
-      url,
-      method,
-      header: headers
-        .filter((h) => h.key)
-        .map(({ key, value }) => ({ key, value })),
-      body: new sdk.RequestBody({ mode: 'raw', raw: body }),
-    });
-
     codegen.convert(
-      langMap[language].language,
-      langMap[language].variant,
-      postmanRequest,
+      lang,
+      variant,
+      request,
       {
         indentCount: 2,
         indentType: 'Space',
@@ -51,10 +35,32 @@ export async function getCodeSnippet({
       (error: Error | null, snippet: string | null) => {
         if (error || !snippet) {
           resolve('Error generating code');
-          return;
+        } else {
+          resolve(snippet);
         }
-        resolve(snippet);
       }
     );
   });
-}
+};
+
+export const generateCode = async (
+  request: RestRequest,
+  language: LanguageKey
+): Promise<string> => {
+  if (!request.method || !request.url) {
+    return 'Not enough data to generate code.';
+  }
+
+  const headers = request.headers
+    .filter((h) => h.key)
+    .map(({ key, value }) => ({ key, value }));
+
+  const postmanRequest = new sdk.Request({
+    url: request.url,
+    method: request.method,
+    header: headers,
+    body: new sdk.RequestBody({ mode: 'raw', raw: request.body }),
+  });
+
+  return await convertRequestToCode(postmanRequest, language);
+};
