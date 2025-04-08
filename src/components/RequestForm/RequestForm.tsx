@@ -16,31 +16,44 @@ const RequestForm = ({ form, onSubmit, isLoading }: Props) => {
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="rest-client-form">
       <fieldset disabled={isLoading}>
-        <div className="method-url-row">
-          <select {...register('method')}>
-            <option value="GET">GET</option>
-            <option value="POST">POST</option>
-            <option value="PUT">PUT</option>
-            <option value="DELETE">DELETE</option>
-            <option value="PATCH">PATCH</option>
-          </select>
-          <input {...register('url')} placeholder="Enter URL" />
+        <div className="method-url-wrapper">
+          <div className="method-url-row">
+            <select {...register('method')}>
+              <option value="GET">GET</option>
+              <option value="POST">POST</option>
+              <option value="PUT">PUT</option>
+              <option value="DELETE">DELETE</option>
+              <option value="PATCH">PATCH</option>
+            </select>
+            <input {...register('url')} placeholder="Enter URL" />
+          </div>
+          {form.formState.errors.url && (
+            <span className="error">{form.formState.errors.url.message}</span>
+          )}
         </div>
 
         <div className="headers-block">
           {fields.map((field, index) => (
-            <div key={field.id} className="header-row">
-              <input {...register(`headers.${index}.key`)} placeholder="Key" />
-              <input
-                {...register(`headers.${index}.value`)}
-                placeholder="Value"
-              />
-              {fields.length > 1 && (
+            <div key={field.id} className="header-wrapper">
+              <div className="header-row">
+                <input
+                  {...register(`headers.${index}.key`)}
+                  placeholder="Key"
+                />
+                <input
+                  {...register(`headers.${index}.value`)}
+                  placeholder="Value"
+                />
                 <button
                   type="button"
                   onClick={() => remove(index)}
                   className="icon-button remove"
                 />
+              </div>
+              {form.formState.errors.headers?.[index]?.key && (
+                <span className="error">
+                  {form.formState.errors.headers[index].key?.message}
+                </span>
               )}
             </div>
           ))}
@@ -78,6 +91,9 @@ const RequestForm = ({ form, onSubmit, isLoading }: Props) => {
 
         <div className="body-row">
           <textarea {...register('body')} placeholder="Request Body" />
+          {form.formState.errors.body && (
+            <span className="error">{form.formState.errors.body.message}</span>
+          )}
         </div>
 
         <button type="submit">{isLoading ? 'Sending...' : 'Send'}</button>
