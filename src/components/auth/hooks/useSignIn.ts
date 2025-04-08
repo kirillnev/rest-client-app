@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { signInSchema } from '@/schemas/signInSchema';
@@ -24,7 +24,7 @@ export const useSignIn = () => {
       if (authError) {
         setError(authError.message);
       } else {
-        router.push('/client');
+        router.push('/');
       }
     } catch (err) {
       if (err instanceof ZodError) {

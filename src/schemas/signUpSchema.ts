@@ -10,7 +10,7 @@ export const signUpSchema = z
       .regex(/\d/, 'Password must contain a digit')
       .regex(/[@$!%*?&]/, 'Password must contain a special character'),
     confirmPassword: z.string(),
-    agreement: z.literal(true).refine(val => val === true, {
+    agreement: z.boolean().refine((val) => val === true, {
       message: 'You must agree to the terms',
     }),
   })

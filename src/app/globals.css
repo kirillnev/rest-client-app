@@ -83,3 +83,19 @@ button:hover {
   font-size: 0.9rem;
   text-align: center;
 }
+
+.btn-signout {
+  width: 150px;
+  padding: 12px;
+  background-color: #dddddd;
+  color: black;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-signout:hover {
+  background-color: #7f7f7f;
+}

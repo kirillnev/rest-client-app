@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
@@ -14,7 +14,7 @@ export default function RedirectIfAuthenticated({ children }: Props) {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        router.replace('/client');
+        router.replace('/');
       }
     });
   }, [router]);

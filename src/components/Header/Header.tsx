@@ -22,17 +22,25 @@ export default function Header() {
       {user ? (
         <>
           <p>Logged in as: {user.email}</p>
-          <button onClick={handleSignOut} style={{ marginTop: '0.5rem' }}>
+          <button onClick={handleSignOut} className="btn-signout">
             Sign out
           </button>
         </>
       ) : (
-        <Link
-          href="/auth/signin"
-          style={{ fontStyle: 'italic', textDecoration: 'underline' }}
-        >
-          Sign in
-        </Link>
+        <div style={{ display: 'flex', gap: '1rem' }}>
+          <Link
+            href="/auth/signin"
+            style={{ fontStyle: 'italic', textDecoration: 'underline' }}
+          >
+            Sign in
+          </Link>
+          <Link
+            href="/auth/signup"
+            style={{ fontStyle: 'italic', textDecoration: 'underline' }}
+          >
+            Sign up
+          </Link>
+        </div>
       )}
       <p>HEADER</p>
     </section>

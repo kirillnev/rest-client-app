@@ -19,12 +19,15 @@ export const useSignUp = () => {
     try {
       signUpSchema.parse({ email, password, confirmPassword, agreement });
 
-      const { error: authError } = await supabase.auth.signUp({ email, password });
+      const { error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+      });
 
       if (authError) {
         setError(authError.message);
       } else {
-        router.push('/client');
+        router.push('/');
       }
     } catch (err) {
       if (err instanceof ZodError) {
@@ -44,6 +47,7 @@ export const useSignUp = () => {
     setPassword,
     setConfirmPassword,
     setAgreement,
+    setError,
     error,
     handleSubmit,
   };

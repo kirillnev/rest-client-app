@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(session?.user ?? null);
 
       if (event === 'SIGNED_OUT') {
-        router.push('/client');
+        router.push('/');
       }
     });
 

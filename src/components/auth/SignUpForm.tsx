@@ -17,7 +17,12 @@ export const SignUpForm = () => {
   } = useSignUp();
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="form-container">
+    <form
+      onSubmit={handleSubmit}
+      noValidate
+      className="form-container"
+      role="form"
+    >
       <h2>Sign Up</h2>
 
       <div className="form-group">

@@ -3,17 +3,16 @@
 import { useSignIn } from '@/components/auth/hooks/useSignIn';
 
 export const SignInForm = () => {
-  const {
-    email,
-    password,
-    setEmail,
-    setPassword,
-    error,
-    handleSubmit,
-  } = useSignIn();
+  const { email, password, setEmail, setPassword, error, handleSubmit } =
+    useSignIn();
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="form-container">
+    <form
+      onSubmit={handleSubmit}
+      noValidate
+      className="form-container"
+      role="form"
+    >
       <h2>Sign In</h2>
 
       <div className="form-group">
