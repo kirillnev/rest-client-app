@@ -1,11 +1,10 @@
-// import { getAuth } from 'firebase/auth';
-import { redirect } from 'next/navigation';
 import RestClient from '@/components/RestClient/RestClient';
+import RequireAuth from '@/components/auth/RequireAuth';
 
-export default async function ClientPage() {
-  const user = true;
-  if (!user) {
-    redirect('/auth/signin');
-  }
-  return <RestClient />;
+export default function ClientPage() {
+  return (
+    <RequireAuth>
+      <RestClient />
+    </RequireAuth>
+  );
 }
