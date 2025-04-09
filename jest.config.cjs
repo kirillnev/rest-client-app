@@ -9,7 +9,10 @@ const customJestConfig = {
   testEnvironment: 'jest-environment-jsdom',
 
   transform: {
-    '^.+\\.(ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
+    '^.+\\.(js|jsx|ts|tsx)$': [
+      'babel-jest',
+      { configFile: './babel.test.config.json' },
+    ],
   },
 
   transformIgnorePatterns: [
@@ -26,6 +29,7 @@ const customJestConfig = {
     'src/**/*.{ts,tsx}',
     '!src/**/*.d.ts',
     '!src/**/__tests__/**',
+    '!src/**/index.ts',
   ],
 /*  coverageThreshold: {
     global: {
