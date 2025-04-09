@@ -12,27 +12,19 @@ jest.mock('@/lib/supabase', () => ({
   },
 }));
 
-describe('SignUpForm', () => {
-  const mockHandleSubmit = jest.fn();
-  const mockSetEmail = jest.fn();
-  const mockSetPassword = jest.fn();
-  const mockSetConfirmPassword = jest.fn();
-  const mockSetAgreement = jest.fn();
+describe('SignUpForm (RHF)', () => {
+  const mockHandleSubmit = jest.fn((fn: () => void) => () => fn());
+  const mockOnSubmit = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
 
     (useSignUp as jest.Mock).mockReturnValue({
-      email: 'test@example.com',
-      password: 'Password123!',
-      confirmPassword: 'Password123!',
-      agreement: true,
-      error: '',
-      setEmail: mockSetEmail,
-      setPassword: mockSetPassword,
-      setConfirmPassword: mockSetConfirmPassword,
-      setAgreement: mockSetAgreement,
+      register: jest.fn(() => ({})),
       handleSubmit: mockHandleSubmit,
+      onSubmit: mockOnSubmit,
+      errors: {},
+      authError: null,
     });
   });
 
@@ -50,44 +42,44 @@ describe('SignUpForm', () => {
     ).toBeInTheDocument();
   });
 
-  it('calls setter functions on input change', () => {
-    render(<SignUpForm />);
-
-    fireEvent.change(screen.getByPlaceholderText(/email/i), {
-      target: { value: 'new@email.com' },
-    });
-    fireEvent.change(screen.getByPlaceholderText(/^password$/i), {
-      target: { value: 'NewPassword1!' },
-    });
-    fireEvent.change(screen.getByPlaceholderText(/confirm password/i), {
-      target: { value: 'NewPassword1!' },
-    });
-    fireEvent.click(screen.getByRole('checkbox'));
-
-    expect(mockSetEmail).toHaveBeenCalledWith('new@email.com');
-    expect(mockSetPassword).toHaveBeenCalledWith('NewPassword1!');
-    expect(mockSetConfirmPassword).toHaveBeenCalledWith('NewPassword1!');
-    expect(mockSetAgreement).toHaveBeenCalledWith(false); // чекбокс был true — стал false
-  });
-
-  it('calls handleSubmit on form submit', () => {
+  it('calls handleSubmit and onSubmit on form submit', () => {
     render(<SignUpForm />);
     fireEvent.submit(screen.getByRole('form'));
     expect(mockHandleSubmit).toHaveBeenCalled();
+    expect(mockOnSubmit).toHaveBeenCalled();
   });
 
-  it('displays error message if error exists', () => {
+  it('displays field-level validation errors', () => {
     (useSignUp as jest.Mock).mockReturnValueOnce({
-      email: '',
-      password: '',
-      confirmPassword: '',
-      agreement: false,
-      error: 'Email already exists',
-      setEmail: mockSetEmail,
-      setPassword: mockSetPassword,
-      setConfirmPassword: mockSetConfirmPassword,
-      setAgreement: mockSetAgreement,
+      register: jest.fn(() => ({})),
       handleSubmit: mockHandleSubmit,
+      onSubmit: mockOnSubmit,
+      errors: {
+        email: { message: 'Invalid email' },
+        password: { message: 'Too short' },
+        confirmPassword: { message: 'Passwords do not match' },
+        agreement: { message: 'You must agree to the terms' },
+      },
+      authError: null,
+    });
+
+    render(<SignUpForm />);
+
+    expect(screen.getByText(/invalid email/i)).toBeInTheDocument();
+    expect(screen.getByText(/too short/i)).toBeInTheDocument();
+    expect(screen.getByText(/passwords do not match/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/you must agree to the terms/i)
+    ).toBeInTheDocument();
+  });
+
+  it('displays backend auth error message', () => {
+    (useSignUp as jest.Mock).mockReturnValueOnce({
+      register: jest.fn(() => ({})),
+      handleSubmit: mockHandleSubmit,
+      onSubmit: mockOnSubmit,
+      errors: {},
+      authError: 'Email already exists',
     });
 
     render(<SignUpForm />);

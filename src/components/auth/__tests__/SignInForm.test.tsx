@@ -12,21 +12,19 @@ jest.mock('@/lib/supabase', () => ({
   },
 }));
 
-describe('SignInForm', () => {
-  const mockHandleSubmit = jest.fn();
-  const mockSetEmail = jest.fn();
-  const mockSetPassword = jest.fn();
+describe('SignInForm (with react-hook-form)', () => {
+  const mockHandleSubmit = jest.fn((fn: () => void) => () => fn());
+  const mockOnSubmit = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
 
     (useSignIn as jest.Mock).mockReturnValue({
-      email: 'test@example.com',
-      password: 'Password123!',
-      error: '',
-      setEmail: mockSetEmail,
-      setPassword: mockSetPassword,
+      register: jest.fn(() => ({})),
       handleSubmit: mockHandleSubmit,
+      onSubmit: mockOnSubmit,
+      errors: {},
+      authError: null,
     });
   });
 
@@ -40,40 +38,43 @@ describe('SignInForm', () => {
     ).toBeInTheDocument();
   });
 
-  it('calls setEmail and setPassword on input change', () => {
+  it('calls handleSubmit and onSubmit on form submit', () => {
     render(<SignInForm />);
 
-    fireEvent.change(screen.getByPlaceholderText(/email/i), {
-      target: { value: 'new@email.com' },
-    });
-    fireEvent.change(screen.getByPlaceholderText(/password/i), {
-      target: { value: 'NewPassword1!' },
-    });
-
-    expect(mockSetEmail).toHaveBeenCalledWith('new@email.com');
-    expect(mockSetPassword).toHaveBeenCalledWith('NewPassword1!');
-  });
-
-  it('calls handleSubmit on form submit', () => {
-    render(<SignInForm />);
-
-    fireEvent.submit(screen.getByRole('form') || screen.getByRole('button'));
+    fireEvent.submit(screen.getByRole('form'));
 
     expect(mockHandleSubmit).toHaveBeenCalled();
+    expect(mockOnSubmit).toHaveBeenCalled();
   });
 
-  it('displays error message if error exists', () => {
+  it('displays field validation errors', () => {
     (useSignIn as jest.Mock).mockReturnValueOnce({
-      email: '',
-      password: '',
-      error: 'Invalid credentials',
-      setEmail: mockSetEmail,
-      setPassword: mockSetPassword,
+      register: jest.fn(() => ({})),
       handleSubmit: mockHandleSubmit,
+      onSubmit: mockOnSubmit,
+      errors: {
+        email: { message: 'Invalid email' },
+        password: { message: 'Password is too short' },
+      },
+      authError: null,
     });
 
     render(<SignInForm />);
 
+    expect(screen.getByText(/invalid email/i)).toBeInTheDocument();
+    expect(screen.getByText(/password is too short/i)).toBeInTheDocument();
+  });
+
+  it('displays auth error from backend', () => {
+    (useSignIn as jest.Mock).mockReturnValueOnce({
+      register: jest.fn(() => ({})),
+      handleSubmit: mockHandleSubmit,
+      onSubmit: mockOnSubmit,
+      errors: {},
+      authError: 'Invalid credentials',
+    });
+
+    render(<SignInForm />);
     expect(screen.getByText(/invalid credentials/i)).toBeInTheDocument();
   });
 });

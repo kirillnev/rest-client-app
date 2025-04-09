@@ -3,22 +3,11 @@
 import { useSignUp } from '@/components/auth/hooks/useSignUp';
 
 export const SignUpForm = () => {
-  const {
-    email,
-    password,
-    confirmPassword,
-    agreement,
-    setEmail,
-    setPassword,
-    setConfirmPassword,
-    setAgreement,
-    error,
-    handleSubmit,
-  } = useSignUp();
+  const { register, handleSubmit, onSubmit, errors, authError } = useSignUp();
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       noValidate
       className="form-container"
       role="form"
@@ -26,47 +15,43 @@ export const SignUpForm = () => {
       <h2>Sign Up</h2>
 
       <div className="form-group">
-        <input
-          type="email"
-          value={email}
-          placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+        <input type="email" placeholder="Email" {...register('email')} />
+        {errors.email && <p style={{ color: 'red' }}>{errors.email.message}</p>}
       </div>
 
       <div className="form-group">
         <input
           type="password"
-          value={password}
           placeholder="Password"
-          onChange={(e) => setPassword(e.target.value)}
-          required
+          {...register('password')}
         />
+        {errors.password && (
+          <p style={{ color: 'red' }}>{errors.password.message}</p>
+        )}
       </div>
 
       <div className="form-group">
         <input
           type="password"
-          value={confirmPassword}
           placeholder="Confirm Password"
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
+          {...register('confirmPassword')}
         />
+        {errors.confirmPassword && (
+          <p style={{ color: 'red' }}>{errors.confirmPassword.message}</p>
+        )}
       </div>
 
       <div className="form-group">
         <label>
-          <input
-            type="checkbox"
-            checked={agreement}
-            onChange={(e) => setAgreement(e.target.checked)}
-          />
-          I agree to the terms
+          <input type="checkbox" {...register('agreement')} />I agree to the
+          terms
         </label>
+        {errors.agreement && (
+          <p style={{ color: 'red' }}>{errors.agreement.message}</p>
+        )}
       </div>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {authError && <p style={{ color: 'red' }}>{authError}</p>}
 
       <button type="submit">Sign Up</button>
     </form>
