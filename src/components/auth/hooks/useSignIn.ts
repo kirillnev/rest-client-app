@@ -1,46 +1,45 @@
-import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { signInSchema } from '@/schemas/signInSchema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 import type { AuthError } from '@supabase/supabase-js';
-import { ZodError } from 'zod';
+import { z } from 'zod';
+import { useState } from 'react';
+
+export type SignInFormData = z.infer<typeof signInSchema>;
 
 export const useSignIn = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const router = useRouter();
+  const [authError, setAuthError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignInFormData>({
+    resolver: zodResolver(signInSchema),
+  });
 
-    try {
-      signInSchema.parse({ email, password });
+  const onSubmit = async (data: SignInFormData) => {
+    const { email, password } = data;
 
-      const { error: authError }: { error: AuthError | null } =
-        await supabase.auth.signInWithPassword({ email, password });
+    const { error: supabaseError }: { error: AuthError | null } =
+      await supabase.auth.signInWithPassword({ email, password });
 
-      if (authError) {
-        setError(authError.message);
-      } else {
-        router.push('/');
-      }
-    } catch (err) {
-      if (err instanceof ZodError) {
-        setError(err.errors[0].message);
-      } else {
-        setError('Something went wrong');
-      }
+    if (supabaseError) {
+      setAuthError(supabaseError.message);
+    } else {
+      setAuthError(null);
+      router.push('/');
     }
   };
 
   return {
-    email,
-    password,
-    setEmail,
-    setPassword,
-    error,
+    register,
     handleSubmit,
+    onSubmit,
+    errors,
+    authError,
   };
 };
