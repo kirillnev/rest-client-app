@@ -1,25 +1,20 @@
-// app/rest-client/page.tsx
 'use client';
 
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import RestClient from '@/components/RestClient/RestClient';
 import RequireAuth from '@/components/auth/RequireAuth';
-import { useAuth } from '@/contexts/AuthContext';
 import './rest-client.css';
+import WelcomeREST from '@/components/WelcomeREST/WelcomeREST';
 
 export default function ClientPage() {
   const { t } = useTranslation();
-  const { user } = useAuth();
 
   return (
     <RequireAuth>
       <main className="rest-client-main">
-        <h1 className="welcome-back-title">
-          {t('welcome.back', {
-            username: user?.email?.split('@')[0] || 'User',
-          })}
-        </h1>
+        <WelcomeREST />
+        <div>Это интерефейс самого REST Клиента.</div>
         <nav className="nav-links">
           <Link href="/rest-client" className="nav-link">
             {t('nav.restClient')}

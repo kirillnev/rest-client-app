@@ -19,7 +19,7 @@ function WelcomeContent() {
   }, [user, router]);
 
   if (user) {
-    return null; // Редирект в процессе
+    return null; // Редирект
   }
 
   return (

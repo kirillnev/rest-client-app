@@ -1,4 +1,3 @@
-// import { getAuth } from 'firebase/auth';
 import { redirect } from 'next/navigation';
 import HistorySection from '@/components/History/History';
 

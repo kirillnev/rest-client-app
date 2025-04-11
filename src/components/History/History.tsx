@@ -1,3 +1,3 @@
-export default async function History() {
+export default function History() {
   return <section>History</section>;
 }
