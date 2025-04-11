@@ -1,31 +1,46 @@
 'use client';
 
-import { useAuth } from '@/contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
+import { Suspense, useEffect } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
+import './page.css';
 
-export default function ClientPage() {
-  const { user, loading } = useAuth();
+function WelcomeContent() {
+  const { t } = useTranslation();
+  const { user } = useAuth();
+  const router = useRouter();
 
-  if (loading) return <p>Loading...</p>;
+  useEffect(() => {
+    if (user) {
+      router.push('/client');
+    }
+  }, [user, router]);
+
+  if (user) {
+    return null; // Редирект в процессе
+  }
 
   return (
-    <main style={{ padding: '2rem' }}>
-      {user ? (
-        <section>
-          <h1>Welcome Back, {user.email}!</h1>
-          {/* <RestClient /> */}
-        </section>
-      ) : (
-        <section>
-          <h1>Welcome!</h1>
-          <div style={{ marginTop: '1rem' }}>
-            <Link href="/auth/signin" style={{ marginRight: '1rem' }}>
-              Sign In
-            </Link>
-            <Link href="/auth/signup">Sign Up</Link>
-          </div>
-        </section>
-      )}
+    <main className="welcome-main">
+      <h1 className="welcome-title">{t('welcome.title')}</h1>
+      <div className="auth-links">
+        <Link href="/auth/signin" className="auth-link">
+          {t('auth.signIn')}
+        </Link>
+        <Link href="/auth/signup" className="auth-link">
+          {t('auth.signUp')}
+        </Link>
+      </div>
     </main>
+  );
+}
+
+export default function Welcome() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <WelcomeContent />
+    </Suspense>
   );
 }

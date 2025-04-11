@@ -1,0 +1,24 @@
+{
+  "welcome": {
+    "title": "Willkommen!",
+    "back": "Willkommen zurück, {{username}}!"
+  },
+  "nav": {
+    "restClient": "REST Client",
+    "history": "Verlauf",
+    "variables": "Variablen",
+    "language": "Sprache"
+  },
+  "auth": {
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "signOut": "Abmelden"
+  },
+  "error": {
+    "notFound": {
+      "subtitle": "Seite nicht gefunden",
+      "text": "Möglicherweise haben Sie einem falschen Link gefolgt.",
+      "back": "Zurück zur Startseite"
+    }
+  }
+}
