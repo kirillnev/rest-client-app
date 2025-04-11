@@ -1,13 +1,13 @@
 .error-container,
 .not-found-container {
-  min-height: 100vh;
+  /* min-height: calc(100vh - 15rem); /* скорректировать */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #f9fafb;
+  background-color: antiquewhite;
   text-align: center;
-  padding: 1rem;
+  padding: 3rem;
 }
 
 .not-found-title {

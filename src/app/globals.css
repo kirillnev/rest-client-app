@@ -63,7 +63,7 @@ input[type='checkbox'] {
 }
 
 button {
-  width: 300px;
+  width: 170px;
   padding: 12px;
   background-color: #0070f3;
   color: white;
@@ -258,7 +258,7 @@ button:hover {
 .main-content {
   padding-top: 160px;
   padding-left: 1rem;
-  padding-right: 1rem;
+  /* padding-right: 1rem; */
   min-height: calc(15rem);
 }
 

@@ -1,32 +1,51 @@
 'use client';
 
 import { useTranslation } from 'react-i18next';
-import Link from 'next/link';
 import RestClient from '@/components/RestClient/RestClient';
 import RequireAuth from '@/components/auth/RequireAuth';
 import './rest-client.css';
 import WelcomeREST from '@/components/WelcomeREST/WelcomeREST';
+import { useState } from 'react';
+import Variables from '@/components/Variables/Variables';
+import History from '@/components/History/History';
+
+type Tab = 'home' | 'client' | 'history' | 'variables';
 
 export default function ClientPage() {
   const { t } = useTranslation();
+  const [activeTab, setActiveTab] = useState<Tab>('home');
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'client':
+        return <RestClient />;
+      case 'history':
+        return <History />;
+      case 'variables':
+        return <Variables />;
+      default:
+        return <WelcomeREST />;
+    }
+  };
 
   return (
     <RequireAuth>
       <main className="rest-client-main">
-        <WelcomeREST />
-        <div>Это интерефейс самого REST Клиента.</div>
+        {renderContent()}
         <nav className="nav-links">
-          <Link href="/rest-client" className="nav-link">
+          <button className="nav-link" onClick={() => setActiveTab('client')}>
             {t('nav.restClient')}
-          </Link>
-          <Link href="/history" className="nav-link">
+          </button>
+          <button className="nav-link" onClick={() => setActiveTab('history')}>
             {t('nav.history')}
-          </Link>
-          <Link href="/variables" className="nav-link">
+          </button>
+          <button
+            className="nav-link"
+            onClick={() => setActiveTab('variables')}
+          >
             {t('nav.variables')}
-          </Link>
+          </button>
         </nav>
-        <RestClient />
       </main>
     </RequireAuth>
   );
