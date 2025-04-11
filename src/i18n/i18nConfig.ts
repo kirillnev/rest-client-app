@@ -1,4 +1,3 @@
-// src/I18n/I18nConfig.tsx
 export const i18nConfig = {
   fallbackLng: 'en',
   supportedLngs: ['en', 'ru', 'de'],
@@ -8,6 +7,11 @@ export const i18nConfig = {
   },
   interpolation: {
     escapeValue: false,
+  },
+  detection: {
+    order: ['cookie', 'localStorage', 'navigator'],
+    caches: ['cookie'],
+    cookieName: 'i18nextLng',
   },
   // debug: process.env.NODE_ENV === 'development',
 };

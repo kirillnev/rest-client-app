@@ -6,8 +6,6 @@ jest.mock('next/headers', () => ({
 }));
 
 describe('getServerLanguage', () => {
-  // const supportedLngs = ['en', 'ru', 'de'];
-
   beforeEach(() => {
     jest.clearAllMocks();
   });

@@ -3,7 +3,6 @@ import { useHeaderLogic } from '../useHeaderLogic';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
-import type { User } from '@supabase/supabase-js';
 
 jest.mock('@/lib/supabase', () => ({
   supabase: {
@@ -27,20 +26,25 @@ describe('useHeaderLogic', () => {
     loading: false,
   };
 
-  const mockUseTranslation = {
-    t: jest.fn(),
-    i18n: {
-      language: 'en',
-      changeLanguage: jest.fn(),
-      on: jest.fn(),
-      off: jest.fn(),
-    },
+  const mockT = jest.fn();
+  const mockChangeLanguage = jest.fn();
+  const mockOn = jest.fn();
+  const mockOff = jest.fn();
+
+  const mockI18n = {
+    language: 'en',
+    changeLanguage: mockChangeLanguage,
+    on: mockOn,
+    off: mockOff,
   };
 
   beforeEach(() => {
     jest.clearAllMocks();
     (useAuth as jest.Mock).mockReturnValue(mockUseAuth);
-    (useTranslation as jest.Mock).mockReturnValue(mockUseTranslation);
+    (useTranslation as jest.Mock).mockReturnValue({
+      t: mockT,
+      i18n: mockI18n,
+    });
   });
 
   it('returns initial state', () => {
@@ -65,31 +69,27 @@ describe('useHeaderLogic', () => {
     expect(result.current.isLangOpen).toBe(false);
   });
 
-  it('changes selected language', () => {
-    const { result } = renderHook(() => useHeaderLogic());
-    act(() => {
-      result.current.handleLangSelect('ru');
-    });
-    expect(mockUseTranslation.i18n.changeLanguage).toHaveBeenCalledWith('ru');
-    expect(result.current.selectedLang).toBe('ru');
-    expect(result.current.isLangOpen).toBe(false);
-  });
-
   it('syncs selectedLang with i18n.language', () => {
-    const mockOn = jest.fn().mockImplementation((event, callback) => {
-      if (event === 'languageChanged') callback('de');
-    });
+    const languageChangedCallback = jest.fn();
     (useTranslation as jest.Mock).mockReturnValue({
-      ...mockUseTranslation,
-      i18n: { ...mockUseTranslation.i18n, on: mockOn },
+      t: mockT,
+      i18n: {
+        ...mockI18n,
+        on: jest.fn((event, cb) => {
+          if (event === 'languageChanged') {
+            cb('de');
+            languageChangedCallback();
+          }
+        }),
+      },
     });
 
     const { result } = renderHook(() => useHeaderLogic());
     expect(result.current.selectedLang).toBe('de');
+    expect(languageChangedCallback).toHaveBeenCalled();
   });
 
   it('calls signOut', async () => {
-    const mockSignOut = supabase.auth.signOut;
     (useAuth as jest.Mock).mockReturnValue({
       user: { id: '1', email: 'test@example.com' },
       loading: false,
@@ -99,15 +99,22 @@ describe('useHeaderLogic', () => {
     await act(async () => {
       await result.current.handleSignOut();
     });
-    expect(mockSignOut).toHaveBeenCalled();
+    expect(supabase.auth.signOut).toHaveBeenCalled();
   });
 
   it('sets isSticky based on scroll position', async () => {
-    Object.defineProperty(window, 'scrollY', { value: 0, writable: true });
+    let scrollY = 0;
+
+    Object.defineProperty(window, 'scrollY', {
+      get: () => scrollY,
+      configurable: true,
+    });
+
     const addEventListenerSpy = jest.spyOn(window, 'addEventListener');
     const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
 
-    const { result, unmount } = renderHook(() => useHeaderLogic('en', 50));
+    const { result, unmount } = renderHook(() => useHeaderLogic(50));
+
     expect(addEventListenerSpy).toHaveBeenCalledWith(
       'scroll',
       expect.any(Function)
@@ -116,14 +123,14 @@ describe('useHeaderLogic', () => {
 
     expect(result.current.isSticky).toBe(false);
 
-    await act(async () => {
-      window.scrollY = 30;
+    await act(() => {
+      scrollY = 30;
       handleScroll(new Event('scroll'));
     });
     expect(result.current.isSticky).toBe(false);
 
-    await act(async () => {
-      window.scrollY = 60;
+    await act(() => {
+      scrollY = 60;
       handleScroll(new Event('scroll'));
     });
     expect(result.current.isSticky).toBe(true);

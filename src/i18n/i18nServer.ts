@@ -1,14 +1,14 @@
-// src/i18n/i18nServer.ts
 import i18next from 'i18next';
 import fs from 'fs';
 import path from 'path';
 import { i18nConfig } from './i18nConfig';
+import type { Resource } from 'i18next';
 
 const LANGUAGES = ['en', 'ru', 'de'];
 const NAMESPACE = 'translation';
 
 export const getResources = () => {
-  const resources: Record<string, any> = {};
+  const resources: Resource = {};
 
   for (const lang of LANGUAGES) {
     const filePath = path.resolve(
@@ -31,6 +31,10 @@ export async function initI18nServer(language: string) {
     ...i18nConfig,
     lng: language,
     resources: getResources(),
+    detection: {
+      order: ['cookie', 'localStorage', 'navigator'],
+      caches: ['cookie'],
+    },
   });
 
   return i18n;

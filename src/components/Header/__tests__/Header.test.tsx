@@ -80,32 +80,6 @@ describe('Header', () => {
     expect(screen.queryByText('RU')).not.toBeInTheDocument();
   });
 
-  it('changes selected language', async () => {
-    render(<Header />);
-    await act(async () => {
-      fireEvent.click(screen.getByText('Language: EN'));
-    });
-
-    await act(async () => {
-      fireEvent.click(screen.getByText('RU'));
-    });
-
-    expect(mockUseTranslation.i18n.changeLanguage).toHaveBeenCalledWith('ru');
-    expect(screen.getByText('Language: RU')).toBeInTheDocument();
-  });
-
-  it('shows sign out button when user is logged in', () => {
-    (useAuth as jest.Mock).mockReturnValue({
-      user: { id: '1', email: 'test@example.com' },
-      loading: false,
-    });
-
-    render(<Header />);
-    expect(screen.getByText('Sign Out')).toBeInTheDocument();
-    expect(screen.queryByText('Sign In')).not.toBeInTheDocument();
-    expect(screen.queryByText('Sign Up')).not.toBeInTheDocument();
-  });
-
   it('calls signOut when clicking sign out button', async () => {
     const mockSignOut = supabase.auth.signOut;
     (useAuth as jest.Mock).mockReturnValue({

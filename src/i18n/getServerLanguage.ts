@@ -1,4 +1,3 @@
-// src/i18n/getServerLanguage.ts
 import { cookies } from 'next/headers';
 
 export async function getServerLanguage(

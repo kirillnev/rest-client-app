@@ -1,72 +1,45 @@
-//useHeaderLogic.ts
+'use client';
+
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
-import type { User } from '@supabase/supabase-js';
+import Cookies from 'js-cookie';
 
-interface HeaderLogic {
-  user: User | null;
-  loading: boolean;
-  handleSignOut: () => Promise<void>;
-  isLangOpen: boolean;
-  selectedLang: string;
-  languages: string[];
-  handleLangSelect: (lang: string) => void;
-  toggleLangOpen: () => void;
-  isSticky: boolean;
-}
-
-export const useHeaderLogic = (
-  initialLang: string = 'en',
-  stickyThreshold: number = 50
-): HeaderLogic => {
+export const useHeaderLogic = (stickyThreshold: number = 50) => {
   const { user, loading } = useAuth();
-
-  const handleSignOut = async (): Promise<void> => {
-    await supabase.auth.signOut();
-    // Редирект обрабатывается в AuthContext
-  };
-
-  const { i18n } = useTranslation();
-  const [isLangOpen, setIsLangOpen] = useState<boolean>(false);
-  const [selectedLang, setSelectedLang] = useState<string>(
-    i18n.language || initialLang
-  );
-  const languages: string[] = ['en', 'ru', 'de'];
-
-  const handleLangSelect = (lang: string): void => {
-    i18n.changeLanguage(lang);
-    setSelectedLang(lang);
-    setIsLangOpen(false);
-  };
-
-  const toggleLangOpen = (): void => {
-    setIsLangOpen((prev) => !prev);
-  };
-
-  const [isSticky, setIsSticky] = useState<boolean>(false);
+  const { i18n, t } = useTranslation();
+  const [isLangOpen, setIsLangOpen] = useState(false);
+  const [selectedLang, setSelectedLang] = useState(i18n.language);
+  const [isSticky, setIsSticky] = useState(false);
+  const languages = ['en', 'ru', 'de'];
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      setIsSticky(scrollPosition > stickyThreshold);
-    };
-
+    const handleScroll = () => setIsSticky(window.scrollY > stickyThreshold);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [stickyThreshold]);
 
   useEffect(() => {
-    const handleLanguageChange = (lng: string) => {
-      setSelectedLang(lng);
-    };
-
-    i18n.on('languageChanged', handleLanguageChange);
+    const onLangChange = (lng: string) => setSelectedLang(lng);
+    i18n.on('languageChanged', onLangChange);
     return () => {
-      i18n.off('languageChanged', handleLanguageChange);
+      i18n.off('languageChanged', onLangChange);
     };
   }, [i18n]);
+
+  const toggleLangOpen = () => setIsLangOpen((prev) => !prev);
+
+  const handleLangSelect = (lang: string) => {
+    i18n.changeLanguage(lang);
+    Cookies.set('i18nextLng', lang);
+    setSelectedLang(i18n.language);
+    setIsLangOpen(false);
+  };
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+  };
 
   return {
     user,
@@ -78,5 +51,6 @@ export const useHeaderLogic = (
     handleLangSelect,
     toggleLangOpen,
     isSticky,
+    t,
   };
 };

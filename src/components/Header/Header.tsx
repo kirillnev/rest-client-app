@@ -4,9 +4,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { useHeaderLogic } from './hooks/useHeaderLogic';
+import { Suspense } from 'react';
 import './Header.css';
 
-const Header: React.FC = () => {
+const HeaderContent = () => {
   const { t } = useTranslation();
   const {
     user,
@@ -78,4 +79,10 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export default function Header() {
+  return (
+    <Suspense fallback={<header className="header" />}>
+      <HeaderContent />
+    </Suspense>
+  );
+}
