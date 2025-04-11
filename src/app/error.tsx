@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import './error-pages.css';
 
 export default function Error({
   error,
@@ -9,15 +10,33 @@ export default function Error({
   error: Error;
   reset: () => void;
 }) {
+  const [show, setShow] = useState(true);
+
   useEffect(() => {
     console.error(error);
+    setShow(true);
   }, [error]);
 
+  if (!show) return null;
+
   return (
-    <div>
-      <h2>Error occurred</h2>
-      <p>{error.message}</p>
-      <button onClick={() => reset()}>Try again</button>
+    <div className="error-alert" role="alert">
+      <strong className="error-title">Error: </strong>
+      <span>{error.message}</span>
+      <div className="error-buttons">
+        <button
+          className="error-button"
+          onClick={() => {
+            setShow(false);
+            reset();
+          }}
+        >
+          Try again
+        </button>
+        <button className="error-close" onClick={() => setShow(false)}>
+          Закрыть
+        </button>
+      </div>
     </div>
   );
 }

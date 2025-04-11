@@ -1,0 +1,90 @@
+.error-container,
+.not-found-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9fafb;
+  text-align: center;
+  padding: 1rem;
+}
+
+.not-found-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ef4444;
+}
+
+.not-found-subtitle {
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+  color: #1f2937;
+}
+
+.not-found-text {
+  margin-top: 0.25rem;
+  color: #6b7280;
+}
+
+.back-home-button {
+  margin-top: 1rem;
+  display: inline-block;
+  padding: 0.5rem 1.25rem;
+  background-color: #2563eb;
+  color: white;
+  border-radius: 0.375rem;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.back-home-button:hover {
+  background-color: #1d4ed8;
+}
+
+.error-alert {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  max-width: 20rem;
+  background-color: #fee2e2;
+  border: 1px solid #f87171;
+  color: #b91c1c;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+}
+
+.error-buttons {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.error-button {
+  background-color: #ef4444;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  border: none;
+}
+
+.error-button:hover {
+  background-color: #dc2626;
+}
+
+.error-close {
+  background: none;
+  border: none;
+  color: #b91c1c;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.error-title {
+  font-weight: bold;
+}
