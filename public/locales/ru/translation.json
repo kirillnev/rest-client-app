@@ -1,7 +1,8 @@
 {
   "welcome": {
     "title": "Добро пожаловать!",
-    "back": "С возвращением, {{username}}!"
+    "back": "С возвращением, {{username}}!",
+    "mainPage": "Главная страница"
   },
   "nav": {
     "restClient": "REST Client",

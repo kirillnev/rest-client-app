@@ -19,7 +19,7 @@ export default function RequireAuth({ children }: Props) {
   }, [user, loading, router]);
 
   if (loading || !user) {
-    return <p>Loading...</p>;
+    return <h2 className="error-message">Loading...</h2>;
   }
 
   return <>{children}</>;

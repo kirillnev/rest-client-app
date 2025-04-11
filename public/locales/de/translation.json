@@ -1,7 +1,8 @@
 {
   "welcome": {
     "title": "Willkommen!",
-    "back": "Willkommen zurück, {{username}}!"
+    "back": "Willkommen zurück, {{username}}!",
+    "mainPage": "Main Page German"
   },
   "nav": {
     "restClient": "REST Client",

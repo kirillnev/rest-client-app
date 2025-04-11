@@ -1,7 +1,8 @@
 {
   "welcome": {
     "title": "Welcome!",
-    "back": "Welcome Back, {{username}}!"
+    "back": "Welcome Back, {{username}}!",
+    "mainPage": "Main Page"
   },
   "nav": {
     "restClient": "REST Client",
