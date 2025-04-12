@@ -1,10 +1,10 @@
 :root {
   --font-geist-sans:
-          'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-          'Helvetica Neue', Arial, sans-serif;
+    'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
   --font-geist-mono:
-          'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-          'Liberation Mono', 'Courier New', monospace;
+    'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
 }
 
 * {
@@ -18,86 +18,88 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   font-family: var(--font-geist-sans);
+  background-color: blanchedalmond;
 }
 
 .form-container {
-    max-width: 400px;
-    margin: 2rem auto;
-    padding: 2rem;
-    border-radius: 12px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+  margin-top: 2rem; /* скорректировать */
 }
 
 .form-container h2 {
-    text-align: center;
-    margin-bottom: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 .form-group {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 input[type='email'],
 input[type='password'],
 input[type='text'] {
-    width: 300px;
-    padding: 10px 12px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    transition: border-color 0.2s ease;
-    outline: none;
+  width: 300px;
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.2s ease;
+  outline: none;
 }
 
 input:focus {
-    border-color: #0070f3;
-    box-shadow: 0 0 0 1px #0070f3;
+  border-color: #0070f3;
+  box-shadow: 0 0 0 1px #0070f3;
 }
 
 input[type='checkbox'] {
-    margin-right: 0.5rem;
-    transform: scale(1.1);
+  margin-right: 0.5rem;
+  transform: scale(1.1);
 }
 
 button {
-    width: 300px;
-    padding: 12px;
-    background-color: #0070f3;
-    color: white;
-    font-size: 1rem;
-    font-weight: 500;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+  width: 170px;
+  padding: 12px;
+  background-color: #0070f3;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 button:hover {
-    background-color: #0059c9;
+  background-color: #0059c9;
 }
 
 .error-message {
-    color: #e00;
-    margin-bottom: 1rem;
-    font-size: 0.9rem;
-    text-align: center;
+  color: #e00;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  text-align: center;
 }
 
 .btn-signout {
-    width: 150px;
-    padding: 12px;
-    background-color: #dddddd;
-    color: black;
-    font-size: 1rem;
-    font-weight: 500;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+  width: 150px;
+  padding: 12px;
+  background-color: #dddddd;
+  color: black;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .btn-signout:hover {
-    background-color: #7f7f7f;
+  background-color: #7f7f7f;
 }
 
 .rest-client {
@@ -251,4 +253,25 @@ button:hover {
   font-size: 12px;
   margin-top: 4px;
   display: block;
+}
+
+.main-content {
+  padding-top: 160px;
+  padding-left: 1rem;
+  /* padding-right: 1rem; */
+  min-height: calc(15rem);
+}
+
+@media (max-width: 540px) {
+  .main-content {
+    padding-top: 200px;
+  }
+}
+
+.layout-body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
