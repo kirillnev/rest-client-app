@@ -1,13 +1,22 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useTranslation } from 'react-i18next';
-import RestClient from '@/components/RestClient/RestClient';
 import RequireAuth from '@/components/auth/RequireAuth';
 import './rest-client.css';
 import WelcomeREST from '@/components/WelcomeREST/WelcomeREST';
+import Loading from '@/components/Loading';
 import { useState } from 'react';
-import Variables from '@/components/Variables/Variables';
-import History from '@/components/History/History';
+
+const RestClient = dynamic(() => import('@/components/RestClient'), {
+  loading: () => <Loading />,
+});
+const Variables = dynamic(() => import('@/components/Variables'), {
+  loading: () => <Loading />,
+});
+const History = dynamic(() => import('@/components/History'), {
+  loading: () => <Loading />,
+});
 
 type Tab = 'home' | 'client' | 'history' | 'variables';
 
