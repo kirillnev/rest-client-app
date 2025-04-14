@@ -1,10 +1,10 @@
 import { redirect } from 'next/navigation';
-import HistorySection from '@/components/History/History';
+import History from '@/components/History';
 
 export default async function HistoryPage() {
   const user = true;
   if (!user) {
     redirect('/auth/signin');
   }
-  return <HistorySection />;
+  return <History />;
 }
