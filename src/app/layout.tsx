@@ -20,6 +20,7 @@ export default async function RootLayout({
   return (
     <html lang={lng}>
       <body className="layout-body">
+        <div className="corner-decoration" />
         <AuthProvider>
           <I18nProvider
             initialI18nStore={i18n.services.resourceStore.data}

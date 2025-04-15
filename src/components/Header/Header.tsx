@@ -26,9 +26,9 @@ const HeaderContent = () => {
       <div className="header-container">
         <Link href="/" className="logo-link">
           <Image
-            src="/app-logo.png"
+            src="/logo-rbr.png"
             alt={t('nav.restClient')}
-            width={80}
+            width={120}
             height={80}
             className="logo-image"
             priority

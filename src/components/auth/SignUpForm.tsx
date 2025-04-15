@@ -44,7 +44,14 @@ export const SignUpForm = () => {
       <div className="form-group">
         <label>
           <input type="checkbox" {...register('agreement')} />I agree to the
-          terms
+          <a
+            href="/terms"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="terms-link"
+          >
+            terms
+          </a>
         </label>
         {errors.agreement && (
           <p style={{ color: 'red' }}>{errors.agreement.message}</p>

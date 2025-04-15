@@ -9,6 +9,7 @@ import './page.css';
 function WelcomeContent() {
   const { t } = useTranslation();
   const { user } = useAuth();
+  const features = t('welcome.features', { returnObjects: true }) as string[];
 
   if (user) {
     return (
@@ -26,6 +27,14 @@ function WelcomeContent() {
   return (
     <main className="welcome-main">
       <h1 className="welcome-title">{t('welcome.title')}</h1>
+      <p className="welcome-text">{t('welcome.text')}</p>
+      <ul className="welcome-features-list">
+        {features.map((item, i) => (
+          <li key={i} className="welcome-feature-item">
+            {item}
+          </li>
+        ))}
+      </ul>
       <div className="auth-links">
         <Link href="/auth/signin" className="auth-link">
           {t('auth.signIn')}

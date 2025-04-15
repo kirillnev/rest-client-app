@@ -2,7 +2,14 @@
   "welcome": {
     "title": "Welcome!",
     "back": "Welcome Back, {{username}}!",
-    "mainPage": "Main Page"
+    "mainPage": "Main Page",
+    "text": "RBrains REST Client - a smart, lightweight, and modern API testing tool, built by the RBrains team as part of an educational project.",
+    "features": [
+      "🔐 Authentication & Authorization",
+      "🌐 REST Client with method, headers, body",
+      "📜 Code generation in multiple languages",
+      "📂 History and smart variables"
+    ]
   },
   "nav": {
     "restClient": "REST Client",

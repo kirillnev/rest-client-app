@@ -55,7 +55,7 @@ describe('Header', () => {
     render(<Header />);
     expect(screen.getByAltText('REST Client')).toHaveAttribute(
       'src',
-      expect.stringContaining('app-logo')
+      expect.stringContaining('logo-rbr')
     );
     expect(screen.getByText('Language: EN')).toBeInTheDocument();
     expect(screen.getByText('Sign In')).toHaveAttribute('href', '/auth/signin');
