@@ -1,14 +1,14 @@
 import { renderHook, act } from '@testing-library/react';
 import { useRestClient } from '../useRestClient';
 import { sendRequestRaw } from '@/utils/requestUtils';
-import { saveToHistory } from '@/utils/saveToHistory';
+import { saveToHistory } from '@/utils/localStorageUtils';
 import { RestRequest } from '@/types';
 
 jest.mock('@/utils/requestUtils', () => ({
   sendRequestRaw: jest.fn(),
 }));
 
-jest.mock('@/utils/saveToHistory', () => ({
+jest.mock('@/utils/localStorageUtils', () => ({
   saveToHistory: jest.fn(),
 }));
 
@@ -42,7 +42,10 @@ describe('useRestClient', () => {
     expect(result.current.responseData).toEqual({ success: true });
     expect(result.current.error).toBeNull();
     expect(result.current.isLoading).toBe(false);
-    expect(saveToHistory).toHaveBeenCalledWith(mockData);
+    expect(saveToHistory).toHaveBeenCalledWith({
+      ...mockData,
+      createdAt: expect.any(Number),
+    });
   });
 
   test('network error does not call saveToHistory', async () => {

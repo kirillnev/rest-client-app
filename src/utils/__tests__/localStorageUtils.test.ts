@@ -1,15 +1,16 @@
-import { saveToHistory } from '../saveToHistory';
-import { RestRequest } from '@/types';
+import { saveToHistory } from '../localStorageUtils';
+import { HistoryItem } from '@/types';
 
 describe('saveToHistory', () => {
   const key = 'rest-client-history';
 
-  const sampleRequest: RestRequest = {
+  const sampleRequest: HistoryItem = {
     method: 'GET',
     url: 'https://example.com',
     headers: [],
     body: '',
     bodyType: 'text',
+    createdAt: 1744732114113,
   };
 
   beforeEach(() => {
@@ -24,12 +25,13 @@ describe('saveToHistory', () => {
   });
 
   test('prepends request to existing history', () => {
-    const oldRequest: RestRequest = {
+    const oldRequest: HistoryItem = {
       method: 'POST',
       url: 'https://old.com',
       headers: [],
       body: '',
       bodyType: 'json',
+      createdAt: 1744732114113,
     };
 
     localStorage.setItem(key, JSON.stringify([oldRequest]));

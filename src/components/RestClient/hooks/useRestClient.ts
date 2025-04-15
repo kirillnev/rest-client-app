@@ -5,7 +5,7 @@ import { RestRequestSchemaType } from '../types';
 import { restRequestSchema } from '../restRequestSchema';
 import { useState } from 'react';
 import { sendRequestRaw } from '@/utils/requestUtils';
-import { saveToHistory } from '@/utils/saveToHistory';
+import { saveToHistory } from '@/utils/localStorageUtils';
 
 export const useRestClient = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +35,7 @@ export const useRestClient = () => {
       const { status, body } = await sendRequestRaw(data);
       setResponseStatus(status);
       setResponseData(body);
-      saveToHistory(data);
+      saveToHistory({ ...data, createdAt: Date.now() });
     } catch (err) {
       setError((err as Error).message);
     } finally {
