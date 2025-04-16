@@ -1,7 +1,7 @@
-import { saveToHistory } from '../localStorageUtils';
+import { saveToHistory, clearHistory } from '../localStorageUtils';
 import { HistoryItem } from '@/types';
 
-describe('saveToHistory', () => {
+describe('localStorageUtils', () => {
   const key = 'rest-client-history';
 
   const sampleRequest: HistoryItem = {
@@ -39,5 +39,12 @@ describe('saveToHistory', () => {
 
     const saved = JSON.parse(localStorage.getItem(key) || '[]');
     expect(saved).toEqual([sampleRequest, oldRequest]);
+  });
+
+  test('clears history', () => {
+    saveToHistory(sampleRequest);
+    clearHistory();
+
+    expect(localStorage.getItem(key)).toBeNull();
   });
 });

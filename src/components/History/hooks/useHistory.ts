@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { HistoryItem } from '@/types';
-import { getFromHistory } from '@/utils/localStorageUtils';
+import { getFromHistory, clearHistory } from '@/utils/localStorageUtils';
 
 export const useHistory = () => {
   const [history, setHistory] = useState<HistoryItem[]>([]);
@@ -9,5 +9,10 @@ export const useHistory = () => {
     setHistory(getFromHistory());
   }, []);
 
-  return { history };
+  const onClear = () => {
+    clearHistory();
+    setHistory([]);
+  };
+
+  return { history, onClear };
 };

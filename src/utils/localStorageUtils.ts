@@ -15,3 +15,7 @@ export const saveToHistory = (historyItem: HistoryItem) => {
 
 export const getFromHistory = (): HistoryItem[] =>
   JSON.parse(localStorage.getItem(HISTORY_LOCAL_STORAGE_KEY) || '[]');
+
+export const clearHistory = () => {
+  localStorage.removeItem(HISTORY_LOCAL_STORAGE_KEY);
+};

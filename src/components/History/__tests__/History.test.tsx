@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import History from '../History';
 import { useHistory } from '../hooks/useHistory';
 
@@ -8,7 +8,7 @@ const mockedUseHistory = useHistory as jest.MockedFunction<typeof useHistory>;
 
 describe('HistoryPage', () => {
   test('renders empty state', () => {
-    mockedUseHistory.mockReturnValue({ history: [] });
+    mockedUseHistory.mockReturnValue({ history: [], onClear: jest.fn() });
 
     render(<History />);
 
@@ -35,6 +35,7 @@ describe('HistoryPage', () => {
           createdAt: 2,
         },
       ],
+      onClear: jest.fn(),
     });
 
     render(<History />);
@@ -47,5 +48,29 @@ describe('HistoryPage', () => {
     expect(screen.getByTestId('history-link-2')).toHaveTextContent(
       '[POST] https://api.test.dev'
     );
+    expect(screen.getByTestId('clear-history')).toBeInTheDocument();
+  });
+
+  test('calls onClear when clear button is clicked', () => {
+    const onClear = jest.fn();
+
+    mockedUseHistory.mockReturnValue({
+      history: [
+        {
+          method: 'GET',
+          url: 'https://example.com',
+          headers: [],
+          body: '',
+          bodyType: 'text',
+          createdAt: 1,
+        },
+      ],
+      onClear,
+    });
+
+    render(<History />);
+    fireEvent.click(screen.getByTestId('clear-history'));
+
+    expect(onClear).toHaveBeenCalled();
   });
 });
