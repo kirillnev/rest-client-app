@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useHeaderLogic } from './hooks/useHeaderLogic';
 import { Suspense } from 'react';
 import './Header.css';
+import { usePathname } from 'next/navigation';
 
 const HeaderContent = () => {
   const { t } = useTranslation();
@@ -20,6 +21,7 @@ const HeaderContent = () => {
     toggleLangOpen,
     isSticky,
   } = useHeaderLogic();
+  const pathname = usePathname();
 
   return (
     <header className={`header ${isSticky ? 'is-sticky' : ''}`}>
@@ -34,6 +36,31 @@ const HeaderContent = () => {
             priority
           />
         </Link>
+
+        {user && (
+          <nav className="nav-menu">
+            <Link
+              href="/client"
+              className={`nav-menu-link ${pathname === '/client' ? 'active' : ''}`}
+            >
+              {t('nav.restClient')}
+            </Link>
+
+            <Link
+              href="/history"
+              className={`nav-menu-link ${pathname === '/history' ? 'active' : ''}`}
+            >
+              {t('nav.history')}
+            </Link>
+
+            <Link
+              href="/variables"
+              className={`nav-menu-link ${pathname === '/variables' ? 'active' : ''}`}
+            >
+              {t('nav.variables')}
+            </Link>
+          </nav>
+        )}
 
         <div className="button-container">
           <div className="lang-toggle">

@@ -1,6 +1,6 @@
 {
   "welcome": {
-    "title": "Welcome!",
+    "title": "Welcome",
     "back": "Welcome Back, {{username}}!",
     "mainPage": "Main Page",
     "text": "RBrains REST Client - a smart, lightweight, and modern API testing tool, built by the RBrains team as part of an educational project.",
@@ -9,6 +9,17 @@
       "🌐 REST Client with method, headers, body",
       "📜 Code generation in multiple languages",
       "📂 History and smart variables"
+    ],
+    "loggedInText": [
+      "RBrains REST Client — a smart, lightweight, and modern API testing tool, built by the RBrains team as part of an educational project.",
+      "",
+      "In the main menu, you’ll find the following sections:",
+      "",
+      "🌐 <strong>REST Client</strong> – create and send HTTP requests, set headers, customize body content, and view detailed responses.",
+      "📂 <strong>History</strong> – keep track of previously made requests and easily re-run or inspect them.",
+      "🧩 <strong>Variables</strong> – manage reusable variables for dynamic request configuration.",
+      "",
+      "These tools are designed to help you test and work with RESTful APIs more efficiently — all in one place."
     ]
   },
   "nav": {

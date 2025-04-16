@@ -16,7 +16,7 @@ export const SignUpForm = () => {
 
       <div className="form-group">
         <input type="email" placeholder="Email" {...register('email')} />
-        {errors.email && <p style={{ color: 'red' }}>{errors.email.message}</p>}
+        <p className="form-error">{errors.email?.message || '\u00A0'}</p>
       </div>
 
       <div className="form-group">
@@ -25,9 +25,7 @@ export const SignUpForm = () => {
           placeholder="Password"
           {...register('password')}
         />
-        {errors.password && (
-          <p style={{ color: 'red' }}>{errors.password.message}</p>
-        )}
+        <p className="form-error">{errors.password?.message || '\u00A0'}</p>
       </div>
 
       <div className="form-group">
@@ -36,9 +34,9 @@ export const SignUpForm = () => {
           placeholder="Confirm Password"
           {...register('confirmPassword')}
         />
-        {errors.confirmPassword && (
-          <p style={{ color: 'red' }}>{errors.confirmPassword.message}</p>
-        )}
+        <p className="form-error">
+          {errors.confirmPassword?.message || '\u00A0'}
+        </p>
       </div>
 
       <div className="form-group">
@@ -53,9 +51,7 @@ export const SignUpForm = () => {
             terms
           </a>
         </label>
-        {errors.agreement && (
-          <p style={{ color: 'red' }}>{errors.agreement.message}</p>
-        )}
+        <p className="form-error">{errors.agreement?.message || '\u00A0'}</p>
       </div>
 
       {authError && <p style={{ color: 'red' }}>{authError}</p>}

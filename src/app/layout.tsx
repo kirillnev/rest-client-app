@@ -9,6 +9,13 @@ import { getServerLanguage } from '@/i18n/getServerLanguage';
 
 export const dynamic = 'force-dynamic';
 
+export const metadata = {
+  title: 'RBrains REST Client',
+  icons: {
+    icon: '/favicon.png',
+  },
+};
+
 export default async function RootLayout({
   children,
 }: {

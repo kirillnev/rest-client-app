@@ -1,12 +1,12 @@
 'use client';
 
 import RequireAuth from '@/components/auth/RequireAuth';
-import HistorySection from '@/components/History/History';
+import Variables from '@/components/Variables';
 
 export default function HistoryPage() {
   return (
     <RequireAuth>
-      <HistorySection />
+      <Variables />
     </RequireAuth>
   );
 }

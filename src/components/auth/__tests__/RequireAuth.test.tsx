@@ -19,7 +19,7 @@ describe('RequireAuth', () => {
     (useRouter as jest.Mock).mockReturnValue({ replace: mockReplace });
   });
 
-  it('renders loading state when loading is true', () => {
+  it('renders the Loading component when loading is true', () => {
     (useAuth as jest.Mock).mockReturnValue({
       user: null,
       loading: true,
@@ -31,7 +31,7 @@ describe('RequireAuth', () => {
       </RequireAuth>
     );
 
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByTestId('loading')).toBeInTheDocument();
   });
 
   it('redirects to /auth/signin if not authenticated', async () => {

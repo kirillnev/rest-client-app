@@ -10,15 +10,24 @@ function WelcomeContent() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const features = t('welcome.features', { returnObjects: true }) as string[];
+  const loggedInText = t('welcome.loggedInText', {
+    returnObjects: true,
+  }) as string[];
 
   if (user) {
     return (
       <main className="welcome-main">
-        <h1 className="welcome-title">{t('welcome.title')}</h1>
-        <div className="auth-links">
-          <Link href="/client" className="auth-link">
-            {t('welcome.mainPage')}
-          </Link>
+        <h1 className="welcome-title">
+          {t('welcome.title')}, {user.email?.split('@')[0]}!
+        </h1>
+        <div className="welcome-features-list-auth">
+          {loggedInText.map((line, i) => (
+            <p
+              key={i}
+              className="welcome-text"
+              dangerouslySetInnerHTML={{ __html: line }}
+            />
+          ))}
         </div>
       </main>
     );
