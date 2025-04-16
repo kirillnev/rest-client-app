@@ -5,10 +5,12 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 
-export const useHeaderLogic = (stickyThreshold: number = 50) => {
+export const useHeaderLogic = (stickyThreshold: number = 10) => {
   const { user, loading } = useAuth();
   const { i18n, t } = useTranslation();
+  const router = useRouter();
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [selectedLang, setSelectedLang] = useState(i18n.language);
   const [isSticky, setIsSticky] = useState(false);
@@ -38,7 +40,12 @@ export const useHeaderLogic = (stickyThreshold: number = 50) => {
   };
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
+    try {
+      await supabase.auth.signOut();
+      router.push('/auth/signin');
+    } catch {
+      router.push('/auth/signin');
+    }
   };
 
   return {

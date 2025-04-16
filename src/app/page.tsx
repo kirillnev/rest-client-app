@@ -1,10 +1,10 @@
 'use client';
 
-import { useTranslation } from 'react-i18next';
-import Link from 'next/link';
-import { Suspense } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import Link from 'next/link';
 import './page.css';
+import { useTranslation } from 'react-i18next';
+import { Suspense } from 'react';
 
 function WelcomeContent() {
   const { t } = useTranslation();
@@ -15,7 +15,7 @@ function WelcomeContent() {
       <main className="welcome-main">
         <h1 className="welcome-title">{t('welcome.title')}</h1>
         <div className="auth-links">
-          <Link href="/client" className="auth-link">
+          <Link href="/home" className="auth-link">
             {t('welcome.mainPage')}
           </Link>
         </div>

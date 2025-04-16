@@ -5,15 +5,15 @@ import Loading from '@/components/Loading';
 import Nav from '@/components/Nav';
 import RequireAuth from '@/components/auth/RequireAuth';
 
-const History = dynamic(() => import('@/components/History'), {
+const VariablesComponent = dynamic(() => import('@/components/Variables'), {
   loading: () => <Loading />,
 });
 
-export default function HistoryPage() {
+export default function VariablesPage() {
   return (
     <RequireAuth>
       <main className="welcome-main">
-        <History />
+        <VariablesComponent />
         <Nav />
       </main>
     </RequireAuth>
