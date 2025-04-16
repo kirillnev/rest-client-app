@@ -1,11 +1,11 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ResponseDataType, RestRequest } from '@/types';
+import { useState } from 'react';
+import { ResponseDataType } from '@/types';
 import { RestRequestSchemaType } from '../types';
 import { restRequestSchema } from '../restRequestSchema';
-import { useState } from 'react';
-import { sendRequestRaw } from '@/utils/requestUtils';
-import { saveToHistory } from '@/utils/localStorageUtils';
+import { useRequestInitializer } from '@/components/RestClient/hooks/useRequestInitializer';
+import { useSubmitRequest } from '@/components/RestClient/hooks/useSubmitRequest';
 
 export const useRestClient = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -25,30 +25,14 @@ export const useRestClient = () => {
     },
   });
 
-  const onSubmit = async (data: RestRequest) => {
-    setIsLoading(true);
-    setError(null);
-    setResponseStatus(null);
-    setResponseData(null);
+  useRequestInitializer(form);
 
-    try {
-      const { status, body } = await sendRequestRaw(data);
-      setResponseStatus(status);
-      setResponseData(body);
-      saveToHistory({ ...data, createdAt: Date.now() });
-    } catch (err) {
-      setError((err as Error).message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const onSubmit = useSubmitRequest({
+    setIsLoading,
+    setError,
+    setResponseData,
+    setResponseStatus,
+  });
 
-  return {
-    form,
-    isLoading,
-    error,
-    responseStatus,
-    responseData,
-    onSubmit,
-  };
+  return { form, isLoading, error, responseStatus, responseData, onSubmit };
 };
