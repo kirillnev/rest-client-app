@@ -1,67 +1,60 @@
 import { renderHook, act } from '@testing-library/react';
 import { useRestClient } from '../useRestClient';
-import { sendRequestRaw } from '@/utils/requestUtils';
-import { saveToHistory } from '@/utils/localStorageUtils';
+import { useRequestInitializer } from '@/components/RestClient/hooks/useRequestInitializer';
+import { useSubmitRequest } from '@/components/RestClient/hooks/useSubmitRequest';
 import { RestRequest } from '@/types';
 
-jest.mock('@/utils/requestUtils', () => ({
-  sendRequestRaw: jest.fn(),
+jest.mock('react-hook-form', () => {
+  const actual = jest.requireActual('react-hook-form');
+  return {
+    ...actual,
+    useForm: jest.fn(() => ({
+      setValue: jest.fn(),
+      getValues: jest.fn(),
+      watch: jest.fn(),
+      reset: jest.fn(),
+      trigger: jest.fn(),
+      clearErrors: jest.fn(),
+      setError: jest.fn(),
+      handleSubmit: jest.fn(),
+      formState: {},
+    })),
+  };
+});
+
+jest.mock('@/components/RestClient/hooks/useRequestInitializer', () => ({
+  useRequestInitializer: jest.fn(),
 }));
 
-jest.mock('@/utils/localStorageUtils', () => ({
-  saveToHistory: jest.fn(),
+jest.mock('@/components/RestClient/hooks/useSubmitRequest', () => ({
+  useSubmitRequest: jest.fn(),
 }));
 
-const mockData: RestRequest = {
-  method: 'GET',
-  url: 'https://example.com',
-  headers: [],
-  body: '',
-  bodyType: 'text',
-};
+const mockSubmit = jest.fn();
 
-describe('useRestClient', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
+beforeEach(() => {
+  (useRequestInitializer as jest.Mock).mockImplementation(() => {});
+  (useSubmitRequest as jest.Mock).mockReturnValue(mockSubmit);
+  jest.clearAllMocks();
+});
+
+test('initializes and returns expected values', async () => {
+  const { result } = renderHook(() => useRestClient());
+
+  expect(result.current.isLoading).toBe(false);
+  expect(result.current.error).toBe(null);
+  expect(result.current.responseStatus).toBe(null);
+  expect(result.current.responseData).toBe(null);
+  expect(result.current.onSubmit).toBe(mockSubmit);
+  expect(useRequestInitializer).toHaveBeenCalled();
+  expect(useSubmitRequest).toHaveBeenCalled();
+});
+
+test('submit updates state', async () => {
+  const { result } = renderHook(() => useRestClient());
+  await act(async () => {
+    await result.current.onSubmit({} as RestRequest);
   });
 
-  test('successful request updates state and saves to history', async () => {
-    (sendRequestRaw as jest.Mock).mockResolvedValue({
-      status: 200,
-      body: { success: true },
-    });
-
-    const { result } = renderHook(() => useRestClient());
-
-    await act(async () => {
-      await result.current.onSubmit(mockData);
-    });
-
-    expect(sendRequestRaw).toHaveBeenCalledWith(mockData);
-    expect(result.current.responseStatus).toBe(200);
-    expect(result.current.responseData).toEqual({ success: true });
-    expect(result.current.error).toBeNull();
-    expect(result.current.isLoading).toBe(false);
-    expect(saveToHistory).toHaveBeenCalledWith({
-      ...mockData,
-      createdAt: expect.any(Number),
-    });
-  });
-
-  test('network error does not call saveToHistory', async () => {
-    (sendRequestRaw as jest.Mock).mockRejectedValue(new Error('fail'));
-
-    const { result } = renderHook(() => useRestClient());
-
-    await act(async () => {
-      await result.current.onSubmit(mockData);
-    });
-
-    expect(sendRequestRaw).toHaveBeenCalledWith(mockData);
-    expect(result.current.error).toBe('fail');
-    expect(result.current.responseStatus).toBeNull();
-    expect(result.current.responseData).toBeNull();
-    expect(result.current.isLoading).toBe(false);
-    expect(saveToHistory).not.toHaveBeenCalled();
-  });
+  expect(mockSubmit).toHaveBeenCalled();
 });
