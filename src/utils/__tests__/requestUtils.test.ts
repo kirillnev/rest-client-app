@@ -1,11 +1,11 @@
-import { buildApiProxyUrl } from '../requestUtils';
+import { buildRestUrl } from '../requestUtils';
 import { RestRequest } from '@/types';
 
 jest.mock('../base64', () => ({
   encodeBase64: (str: string) => `base64(${str})`,
 }));
 
-describe('buildApiProxyUrl', () => {
+describe('buildRestUrl', () => {
   test('builds URL with JSON body and headers', () => {
     const data: RestRequest = {
       method: 'POST',
@@ -18,10 +18,10 @@ describe('buildApiProxyUrl', () => {
       ],
     };
 
-    const result = buildApiProxyUrl(data);
+    const result = buildRestUrl(data);
 
     expect(result).toBe(
-      '/api/proxy/POST/base64(https://example.com)/base64({"key":"value"})?Authorization=Bearer%2520token&Content-Type=application%252Fjson'
+      '/POST/base64(https://example.com)/base64({"key":"value"})?Authorization=Bearer%2520token&Content-Type=application%252Fjson'
     );
   });
 
@@ -34,7 +34,7 @@ describe('buildApiProxyUrl', () => {
       headers: [],
     };
 
-    const result = buildApiProxyUrl(data);
+    const result = buildRestUrl(data, '/api/proxy');
 
     expect(result).toBe('/api/proxy/GET/base64(https://api.com)/base64(hello)');
   });

@@ -1,18 +1,42 @@
 'use client';
-import { useTranslation } from 'react-i18next';
-import { useAuth } from '@/contexts/AuthContext';
 
-export default function History() {
-  const { user } = useAuth();
-  const { t } = useTranslation();
+import Link from 'next/link';
+import { useHistory } from './hooks/useHistory';
+import { buildRestUrl } from '@/utils/requestUtils';
+
+const History = () => {
+  const { history, onClear } = useHistory();
+
+  if (history.length === 0) {
+    return (
+      <div data-testid="history-empty">
+        You haven&#39;t executed any requests yet.
+      </div>
+    );
+  }
+
   return (
     <>
-      <h1 className="welcome-back-title">
-        {t('welcome.back', {
-          username: user?.email?.split('@')[0] || 'User',
-        })}
-      </h1>
-      <h3>Здесь История, бла, бла, бла...</h3>
+      <ul data-testid="history-list">
+        {history.map((item) => (
+          <li key={item.createdAt} data-testid="history-item">
+            <span data-testid="history-date">
+              {new Date(item.createdAt).toLocaleString()}
+            </span>
+            <Link
+              href={buildRestUrl(item)}
+              data-testid={`history-link-${item.createdAt}`}
+            >
+              [{item.method}] {item.url}
+            </Link>
+          </li>
+        ))}
+      </ul>
+      <button onClick={onClear} data-testid="clear-history">
+        Clear History
+      </button>
     </>
   );
-}
+};
+
+export default History;
