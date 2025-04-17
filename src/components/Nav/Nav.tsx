@@ -3,7 +3,7 @@
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import './nav.css';
+import './Nav.css';
 
 export default function Nav() {
   const { t } = useTranslation();
