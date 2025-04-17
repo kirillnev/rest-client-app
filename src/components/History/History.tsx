@@ -20,7 +20,11 @@ const History = () => {
     <div className="history-container">
       <ul className="history-list" data-testid="history-list">
         {history.map((item) => (
-          <li key={item.createdAt} className="history-item" data-testid="history-item">
+          <li
+            key={item.createdAt}
+            className="history-item"
+            data-testid="history-item"
+          >
             <span className="history-date" data-testid="history-date">
               {new Date(item.createdAt).toLocaleString()}
             </span>

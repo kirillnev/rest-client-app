@@ -45,7 +45,9 @@ jest.mock('@/i18n/i18nServer', () => ({
 
 describe('RootLayout', () => {
   it('renders children, header, and footer wrapped in providers', async () => {
-    const content = await RootLayout({ children: <div data-testid="content">Page Content</div> });
+    const content = await RootLayout({
+      children: <div data-testid="content">Page Content</div>,
+    });
 
     render(content);
 

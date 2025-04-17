@@ -74,10 +74,11 @@ describe('Welcome Component', () => {
     );
 
     expect(
-      screen.getByText((content, element) =>
-        element?.tagName.toLowerCase() === 'h1' &&
-        content.includes('Welcome') &&
-        content.includes('test')
+      screen.getByText(
+        (content, element) =>
+          element?.tagName.toLowerCase() === 'h1' &&
+          content.includes('Welcome') &&
+          content.includes('test')
       )
     ).toBeInTheDocument();
 
