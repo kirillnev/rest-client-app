@@ -35,7 +35,7 @@ const HeadersBlock = ({ register, errors, fields, append, remove }: Props) => (
     <button
       type="button"
       onClick={() => append({ key: '', value: '' })}
-      className="add-link"
+      className="add-link-btn"
     >
       Add header
     </button>

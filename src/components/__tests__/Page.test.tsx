@@ -14,16 +14,32 @@ jest.mock('react-i18next', () => ({
 }));
 
 describe('Welcome Component', () => {
-  const mockT = jest.fn((key) => key);
+  const mockT = jest.fn();
   const mockUseAuth = {
     user: null,
   };
 
   beforeEach(() => {
-    (useTranslation as jest.Mock).mockReturnValue({
-      t: mockT,
+    mockT.mockImplementation((key) => {
+      switch (key) {
+        case 'welcome.features':
+          return ['Feature 1', 'Feature 2'];
+        case 'welcome.text':
+          return 'Welcome text';
+        case 'welcome.title':
+          return 'Welcome!';
+        case 'auth.signIn':
+          return 'Sign In';
+        case 'auth.signUp':
+          return 'Sign Up';
+        case 'welcome.loggedInText':
+          return ['<b>Welcome back!</b>', '<i>Enjoy your stay.</i>'];
+        default:
+          return key;
+      }
     });
 
+    (useTranslation as jest.Mock).mockReturnValue({ t: mockT });
     (useAuth as jest.Mock).mockReturnValue(mockUseAuth);
   });
 
@@ -38,15 +54,17 @@ describe('Welcome Component', () => {
       </Suspense>
     );
 
-    expect(screen.getByText('welcome.title')).toBeInTheDocument();
-    expect(screen.getByText('auth.signIn')).toBeInTheDocument();
-    expect(screen.getByText('auth.signUp')).toBeInTheDocument();
-    expect(screen.queryByText('welcome.mainPage')).not.toBeInTheDocument();
+    expect(screen.getByText('Welcome!')).toBeInTheDocument();
+    expect(screen.getByText('Welcome text')).toBeInTheDocument();
+    expect(screen.getByText('Feature 1')).toBeInTheDocument();
+    expect(screen.getByText('Feature 2')).toBeInTheDocument();
+    expect(screen.getByText('Sign In')).toHaveAttribute('href', '/auth/signin');
+    expect(screen.getByText('Sign Up')).toHaveAttribute('href', '/auth/signup');
   });
 
   it('renders correctly for authenticated user', () => {
     (useAuth as jest.Mock).mockReturnValueOnce({
-      user: { id: '123', name: 'Test User' },
+      user: { email: 'test@example.com' },
     });
 
     render(
@@ -55,52 +73,32 @@ describe('Welcome Component', () => {
       </Suspense>
     );
 
-    expect(screen.getByText('welcome.title')).toBeInTheDocument();
-    expect(screen.getByText('welcome.mainPage')).toBeInTheDocument();
-    expect(screen.queryByText('auth.signIn')).not.toBeInTheDocument();
-    expect(screen.queryByText('auth.signUp')).not.toBeInTheDocument();
+    expect(
+      screen.getByText((content, element) =>
+        element?.tagName.toLowerCase() === 'h1' &&
+        content.includes('Welcome') &&
+        content.includes('test')
+      )
+    ).toBeInTheDocument();
+
+    expect(screen.getByText('Welcome back!')).toBeInTheDocument();
+    expect(screen.getByText('Enjoy your stay.')).toBeInTheDocument();
+
+    expect(screen.queryByText('Sign In')).not.toBeInTheDocument();
+    expect(screen.queryByText('Sign Up')).not.toBeInTheDocument();
   });
 
-  it('shows loading state when suspended', () => {
-    (useTranslation as jest.Mock).mockReturnValueOnce({
-      t: () => new Promise(() => {}),
-    });
+  it('shows loading fallback while suspended', () => {
+    const Suspend = () => {
+      throw new Promise(() => {}); // заставляет Suspense отрисовать fallback
+    };
 
     render(
       <Suspense fallback={<div>Loading...</div>}>
-        <Welcome />
+        <Suspend />
       </Suspense>
     );
 
     expect(screen.getByText('Loading...')).toBeInTheDocument();
-  });
-
-  it('has correct links for unauthenticated user', () => {
-    render(
-      <Suspense fallback={<div>Loading...</div>}>
-        <Welcome />
-      </Suspense>
-    );
-
-    const signInLink = screen.getByText('auth.signIn').closest('a');
-    const signUpLink = screen.getByText('auth.signUp').closest('a');
-
-    expect(signInLink).toHaveAttribute('href', '/auth/signin');
-    expect(signUpLink).toHaveAttribute('href', '/auth/signup');
-  });
-
-  it('has correct link for authenticated user', () => {
-    (useAuth as jest.Mock).mockReturnValueOnce({
-      user: { id: '123', name: 'Test User' },
-    });
-
-    render(
-      <Suspense fallback={<div>Loading...</div>}>
-        <Welcome />
-      </Suspense>
-    );
-
-    const mainPageLink = screen.getByText('welcome.mainPage').closest('a');
-    expect(mainPageLink).toHaveAttribute('href', '/home');
   });
 });

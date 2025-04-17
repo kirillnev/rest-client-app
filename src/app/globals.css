@@ -160,51 +160,6 @@ input[type='checkbox']:checked::after {
   background-color: #7f7f7f;
 }
 
-.rest-client {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 16px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-family: sans-serif;
-}
-
-.rest-client fieldset {
-  border: none;
-  padding: 0;
-  margin: 0;
-}
-
-.rest-client select,
-.rest-client input,
-.rest-client textarea {
-  padding: 8px;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.rest-client textarea {
-  width: 100%;
-  min-height: 120px;
-}
-
-.rest-client button {
-  padding: 10px;
-  background-color: #0070f3;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.rest-client button:hover {
-  background-color: #005ac1;
-}
-
 .method-url-wrapper {
   display: flex;
   flex-direction: column;
@@ -286,10 +241,6 @@ input[type='checkbox']:checked::after {
   align-items: center;
 }
 
-.body-row {
-  padding-bottom: 20px;
-}
-
 .response-block {
   margin-top: 1rem;
   padding: 1rem;
@@ -332,6 +283,8 @@ input[type='checkbox']:checked::after {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  z-index: 0;
+  position: relative;
 }
 
 .corner-decoration {
@@ -345,5 +298,5 @@ input[type='checkbox']:checked::after {
   background-size: contain;
   opacity: 0.15;
   pointer-events: none;
-  z-index: 0;
+  z-index: -1;
 }

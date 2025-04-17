@@ -6,6 +6,7 @@ import { useRequestForm } from './hooks/useRequestForm';
 import MethodUrlBlock from './MethodUrlBlock';
 import HeadersBlock from './HeadersBlock';
 import BodyBlock from './BodyBlock';
+import '../RestClient/rest-client.css';
 
 type Props = {
   form: UseFormReturn<RestRequest>;
@@ -20,6 +21,7 @@ const RequestForm = ({ form, onSubmit, isLoading }: Props) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="rest-client-form">
+      <h2>Rest Client</h2>
       <fieldset disabled={isLoading}>
         <MethodUrlBlock register={register} errors={formState.errors} />
         <HeadersBlock
