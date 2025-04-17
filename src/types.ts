@@ -13,4 +13,6 @@ export type RestRequest = {
   bodyType: 'json' | 'text';
 };
 
+export type HistoryItem = RestRequest & { createdAt: number };
+
 export type ResponseDataType = string | Record<string, unknown> | null;

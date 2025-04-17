@@ -3,6 +3,7 @@ import { useHeaderLogic } from '../useHeaderLogic';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
+import { useRouter } from 'next/navigation';
 
 jest.mock('@/lib/supabase', () => ({
   supabase: {
@@ -18,6 +19,15 @@ jest.mock('@/contexts/AuthContext', () => ({
 
 jest.mock('react-i18next', () => ({
   useTranslation: jest.fn(),
+}));
+
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn(),
+}));
+
+jest.mock('js-cookie', () => ({
+  set: jest.fn(),
+  get: jest.fn(),
 }));
 
 describe('useHeaderLogic', () => {
@@ -38,6 +48,9 @@ describe('useHeaderLogic', () => {
     off: mockOff,
   };
 
+  const mockPush = jest.fn();
+  const mockRouter = { push: mockPush };
+
   beforeEach(() => {
     jest.clearAllMocks();
     (useAuth as jest.Mock).mockReturnValue(mockUseAuth);
@@ -45,6 +58,7 @@ describe('useHeaderLogic', () => {
       t: mockT,
       i18n: mockI18n,
     });
+    (useRouter as jest.Mock).mockReturnValue(mockRouter);
   });
 
   it('returns initial state', () => {
@@ -75,6 +89,7 @@ describe('useHeaderLogic', () => {
       t: mockT,
       i18n: {
         ...mockI18n,
+        language: 'en',
         on: jest.fn((event, cb) => {
           if (event === 'languageChanged') {
             cb('de');
@@ -89,7 +104,7 @@ describe('useHeaderLogic', () => {
     expect(languageChangedCallback).toHaveBeenCalled();
   });
 
-  it('calls signOut', async () => {
+  it('calls signOut and redirects', async () => {
     (useAuth as jest.Mock).mockReturnValue({
       user: { id: '1', email: 'test@example.com' },
       loading: false,
@@ -100,20 +115,38 @@ describe('useHeaderLogic', () => {
       await result.current.handleSignOut();
     });
     expect(supabase.auth.signOut).toHaveBeenCalled();
+    expect(mockRouter.push).toHaveBeenCalledWith('/auth/signin');
   });
 
-  it('sets isSticky based on scroll position', async () => {
-    let scrollY = 0;
+  it('handles signOut error and redirects', async () => {
+    (supabase.auth.signOut as jest.Mock).mockRejectedValue(
+      new Error('Sign out failed')
+    );
+    (useAuth as jest.Mock).mockReturnValue({
+      user: { id: '1', email: 'test@example.com' },
+      loading: false,
+    });
 
+    const { result } = renderHook(() => useHeaderLogic());
+    await act(async () => {
+      await result.current.handleSignOut();
+    });
+    expect(supabase.auth.signOut).toHaveBeenCalled();
+    expect(mockRouter.push).toHaveBeenCalledWith('/auth/signin');
+  });
+
+  it('sets isSticky based on scroll position', () => {
+    const originalWindow = { ...window };
+    const scrollYMock = jest.fn();
     Object.defineProperty(window, 'scrollY', {
-      get: () => scrollY,
+      get: scrollYMock,
       configurable: true,
     });
 
     const addEventListenerSpy = jest.spyOn(window, 'addEventListener');
     const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
 
-    const { result, unmount } = renderHook(() => useHeaderLogic(50));
+    const { result, unmount } = renderHook(() => useHeaderLogic(10));
 
     expect(addEventListenerSpy).toHaveBeenCalledWith(
       'scroll',
@@ -121,21 +154,30 @@ describe('useHeaderLogic', () => {
     );
     const handleScroll = addEventListenerSpy.mock.calls[0][1] as EventListener;
 
-    expect(result.current.isSticky).toBe(false);
-
-    await act(() => {
-      scrollY = 30;
+    scrollYMock.mockReturnValue(0);
+    act(() => {
       handleScroll(new Event('scroll'));
     });
     expect(result.current.isSticky).toBe(false);
 
-    await act(() => {
-      scrollY = 60;
+    scrollYMock.mockReturnValue(30);
+    act(() => {
       handleScroll(new Event('scroll'));
     });
     expect(result.current.isSticky).toBe(true);
 
+    scrollYMock.mockReturnValue(5);
+    act(() => {
+      handleScroll(new Event('scroll'));
+    });
+    expect(result.current.isSticky).toBe(false);
+
     unmount();
     expect(removeEventListenerSpy).toHaveBeenCalledWith('scroll', handleScroll);
+
+    Object.defineProperty(window, 'scrollY', {
+      value: originalWindow.scrollY,
+      configurable: true,
+    });
   });
 });

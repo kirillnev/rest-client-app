@@ -39,5 +39,16 @@
       "text": "You may have followed the wrong link.",
       "back": "Back to home"
     }
+  },
+  "variables": {
+    "title": "Variables",
+    "name": "Name",
+    "value": "Value",
+    "actions": "Actions",
+    "namePlaceholder": "Variable name",
+    "valuePlaceholder": "Variable value",
+    "addButton": "Add Variable",
+    "deleteButton": "Delete",
+    "noVariables": "No variables yet"
   }
 }
