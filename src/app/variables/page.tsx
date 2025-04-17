@@ -1,9 +1,15 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import RequireAuth from '@/components/auth/RequireAuth';
-import Variables from '@/components/Variables';
+import Loading from '@/components/Loading';
 
-export default function HistoryPage() {
+const Variables = dynamic(() => import('@/components/Variables'), {
+  loading: () => <Loading />,
+  ssr: false,
+});
+
+export default function VariablesPage() {
   return (
     <RequireAuth>
       <Variables />

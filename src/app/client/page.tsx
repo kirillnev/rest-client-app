@@ -1,9 +1,15 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import RequireAuth from '@/components/auth/RequireAuth';
-import RestClient from '@/components/RestClient';
+import Loading from '@/components/Loading';
 
-export default function HistoryPage() {
+const RestClient = dynamic(() => import('@/components/RestClient'), {
+  loading: () => <Loading />,
+  ssr: false,
+});
+
+export default function ClientPage() {
   return (
     <RequireAuth>
       <RestClient />
