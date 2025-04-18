@@ -1,15 +1,14 @@
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { signUpSchema } from '@/schemas/signUpSchema';
+import { getSignUpSchema, SignUpSchemaType } from '@/schemas/signUpSchema';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
-import { z } from 'zod';
-
-export type SignUpFormData = z.infer<typeof signUpSchema>;
+import { useTranslation } from 'react-i18next';
 
 export const useSignUp = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const [authError, setAuthError] = useState<string | null>(null);
 
   const {
@@ -17,11 +16,11 @@ export const useSignUp = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<SignUpFormData>({
-    resolver: zodResolver(signUpSchema),
+  } = useForm<SignUpSchemaType>({
+    resolver: zodResolver(getSignUpSchema(t)),
   });
 
-  const onSubmit = async (data: SignUpFormData) => {
+  const onSubmit = async (data: SignUpSchemaType) => {
     setAuthError(null);
     const { email, password } = data;
 

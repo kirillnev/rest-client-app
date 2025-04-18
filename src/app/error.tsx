@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import './error-pages.css';
 
 export default function Error({
@@ -10,6 +11,7 @@ export default function Error({
   error: Error;
   reset: () => void;
 }) {
+  const { t } = useTranslation();
   const [show, setShow] = useState(true);
 
   useEffect(() => {
@@ -21,7 +23,7 @@ export default function Error({
 
   return (
     <div className="error-alert" role="alert">
-      <strong className="error-title">Error: </strong>
+      <strong className="error-title">{t('error.alert.title')} </strong>
       <span>{error.message}</span>
       <div className="error-buttons">
         <button
@@ -31,10 +33,10 @@ export default function Error({
             reset();
           }}
         >
-          Try again
+          {t('error.alert.tryAgain')}
         </button>
         <button className="error-close" onClick={() => setShow(false)}>
-          Закрыть
+          {t('error.alert.close')}
         </button>
       </div>
     </div>

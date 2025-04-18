@@ -6,7 +6,6 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-container">
-        {/* Слева — GitHub-ссылки */}
         <div className="github-links">
           <Link
             href="https://github.com/kirillnev"
@@ -34,12 +33,10 @@ const Footer = () => {
           </Link>
         </div>
 
-        {/* По центру — Копирайт */}
         <div className="footer-copy">
           <span>© {new Date().getFullYear()} REST Client</span>
         </div>
 
-        {/* Справа — Логотип RS */}
         <div className="footer-logo">
           <Link
             href="https://rs.school/courses/reactjs"

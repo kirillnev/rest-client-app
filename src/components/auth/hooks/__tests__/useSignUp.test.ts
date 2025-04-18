@@ -2,8 +2,9 @@ import { renderHook, act } from '@testing-library/react';
 import { useSignUp } from '../useSignUp';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
-import type { SignUpFormData } from '../useSignUp';
-import { signUpSchema } from '@/schemas/signUpSchema';
+import type { SignUpSchemaType } from '@/schemas/signUpSchema';
+import { getSignUpSchema } from '@/schemas/signUpSchema';
+import type { TFunction } from 'i18next';
 
 jest.mock('@/lib/supabase', () => ({
   supabase: {
@@ -20,13 +21,29 @@ jest.mock('next/navigation', () => ({
 describe('useSignUp (react-hook-form version)', () => {
   const mockPush = jest.fn();
 
+  const t = ((key: string) => {
+    const messages: Record<string, string> = {
+      'auth.validation.email': 'Invalid email',
+      'auth.validation.password.min': 'Password must be at least 8 characters',
+      'auth.validation.password.letter': 'Password must contain a letter',
+      'auth.validation.password.digit': 'Password must contain a digit',
+      'auth.validation.password.special':
+        'Password must contain a special character',
+      'auth.validation.password.match': 'Passwords do not match',
+      'auth.validation.agreement': 'You must agree to the terms',
+    };
+    return messages[key] || key;
+  }) as unknown as TFunction;
+
   beforeEach(() => {
     jest.clearAllMocks();
     (useRouter as jest.Mock).mockReturnValue({ push: mockPush });
   });
 
   it('should fail zod validation for invalid input', () => {
-    const result = signUpSchema.safeParse({
+    const schema = getSignUpSchema(t);
+
+    const result = schema.safeParse({
       email: 'invalid-email',
       password: '',
       confirmPassword: '',
@@ -38,7 +55,7 @@ describe('useSignUp (react-hook-form version)', () => {
     if (!result.success) {
       const messages = result.error.errors.map((e) => e.message).join(' ');
 
-      expect(messages).toMatch(/email/i);
+      expect(messages).toMatch(/invalid email/i);
       expect(messages).toMatch(/password/i);
       expect(messages).toMatch(/agree/i);
     }
@@ -51,7 +68,7 @@ describe('useSignUp (react-hook-form version)', () => {
 
     const { result } = renderHook(() => useSignUp());
 
-    const validData: SignUpFormData = {
+    const validData: SignUpSchemaType = {
       email: 'test@mail.com',
       password: 'Password123!',
       confirmPassword: 'Password123!',
@@ -73,7 +90,7 @@ describe('useSignUp (react-hook-form version)', () => {
 
     const { result } = renderHook(() => useSignUp());
 
-    const validData: SignUpFormData = {
+    const validData: SignUpSchemaType = {
       email: 'test@mail.com',
       password: 'Password123!',
       confirmPassword: 'Password123!',

@@ -3,15 +3,17 @@
 import Link from 'next/link';
 import { useHistory } from './hooks/useHistory';
 import { buildRestUrl } from '@/utils/requestUtils';
+import { useTranslation } from 'react-i18next';
 import './history.css';
 
 const History = () => {
+  const { t } = useTranslation();
   const { history, onClear } = useHistory();
 
   if (history.length === 0) {
     return (
       <div className="history-container empty" data-testid="history-empty">
-        You haven&#39;t executed any requests yet.
+        {t('history.empty')}
       </div>
     );
   }
@@ -43,7 +45,7 @@ const History = () => {
         onClick={onClear}
         data-testid="clear-history"
       >
-        Clear History
+        {t('history.clearButton')}
       </button>
     </div>
   );

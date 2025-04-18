@@ -1,22 +1,22 @@
 .loading-overlay {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 4rem 1rem;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 1rem;
+  width: 100%;
 }
 
 .spinner {
-    width: 36px;
-    height: 36px;
-    border: 4px solid #374151;
-    border-top-color: #374151;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
+  width: 36px;
+  height: 36px;
+  border: 4px solid #374151;
+  border-top-color: #374151;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
 }
 
 @keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
+  }
 }

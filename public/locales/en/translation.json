@@ -31,13 +31,61 @@
   "auth": {
     "signIn": "Sign In",
     "signUp": "Sign Up",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Password",
+    "confirmPasswordPlaceholder": "Confirm Password",
+    "agreementLabel": "I agree to the",
+    "termsLink": "terms",
+    "validation": {
+      "email": "Invalid email format",
+      "password": {
+        "min": "Password must be at least 8 characters",
+        "letter": "Password must contain a letter",
+        "digit": "Password must contain a digit",
+        "special": "Password must contain a special character"
+      },
+      "agreement": "You must agree to the terms"
+    }
   },
   "error": {
     "notFound": {
       "subtitle": "Page not found",
       "text": "You may have followed the wrong link.",
       "back": "Back to home"
+    },
+    "alert": {
+      "title": "Error:",
+      "tryAgain": "Try again",
+      "close": "Close"
+    }
+  },
+  "generatedCode": {
+    "title": "Generated Code",
+    "languageLabel": "Language:"
+  },
+  "history": {
+    "empty": "You haven't executed any requests yet.",
+    "clearButton": "Clear History"
+  },
+  "request": {
+    "body": {
+      "type": {
+        "text": "Text",
+        "json": "JSON"
+      },
+      "prettify": "Prettify",
+      "placeholder": "Request Body"
+    },
+    "headers": {
+      "keyPlaceholder": "Key",
+      "valuePlaceholder": "Value",
+      "addButton": "Add header"
+    },
+    "form": {
+      "title": "REST Client",
+      "send": "Send",
+      "sending": "Sending..."
     }
   },
   "variables": {
@@ -50,5 +98,49 @@
     "addButton": "Add Variable",
     "deleteButton": "Delete",
     "noVariables": "No variables yet"
+  },
+  "validation": {
+    "url": "Invalid URL format",
+    "headerKey": "Invalid header name",
+    "invalidJson": "Invalid JSON"
+  },
+  "response": {
+    "title": "Response",
+    "status": "Status",
+    "error": "Error"
+  },
+  "terms": {
+    "title": "Terms and Conditions",
+    "lastUpdated": "Last updated: April 15, 2025",
+    "sections": {
+      "purpose": {
+        "title": "1. Purpose",
+        "text": "This application is intended for testing and learning how REST APIs work. It is not designed for use in production environments or handling sensitive data."
+      },
+      "responsibility": {
+        "title": "2. User Responsibility",
+        "items": [
+          "You are responsible for all activities performed through your account.",
+          "You agree not to misuse the app, send malicious requests, or violate any laws.",
+          "Data you send to external APIs via this client is not stored or monitored."
+        ]
+      },
+      "warranty": {
+        "title": "3. No Warranty",
+        "text": "This app is provided as is without any warranties of any kind. We do not guarantee uninterrupted or error-free operation."
+      },
+      "liability": {
+        "title": "4. Limitation of Liability",
+        "text": "Under no circumstances shall the developers be held liable for any damages resulting from the use of this application."
+      },
+      "changes": {
+        "title": "5. Changes",
+        "text": "We may update these terms at any time. Changes will be posted on this page. Continued use of the app after changes indicates your acceptance."
+      },
+      "contact": {
+        "title": "6. Contact",
+        "text": "For any questions regarding these terms, please contact the development team via GitHub."
+      }
+    }
   }
 }

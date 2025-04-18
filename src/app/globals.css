@@ -43,7 +43,6 @@ body {
 .form-group {
   display: flex;
   flex-direction: column;
-
 }
 
 input[type='email'],
@@ -53,7 +52,9 @@ input[type='password'] {
   border-radius: 8px;
   font-size: 1rem;
   background-color: #f9fafb;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
 input:focus {
@@ -129,7 +130,9 @@ input[type='checkbox']:checked::after {
   color: #4b5563;
   text-decoration: underline;
   font-weight: 400;
-  transition: color 0.2s ease, font-weight 0.2s ease;
+  transition:
+    color 0.2s ease,
+    font-weight 0.2s ease;
 }
 
 .terms-link:hover {
