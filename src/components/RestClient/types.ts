@@ -1,4 +1,4 @@
 import { z } from 'zod';
-import { restRequestSchema } from './restRequestSchema';
+import { restRequestSchemaBase } from './restRequestSchema';
 
-export type RestRequestSchemaType = z.infer<typeof restRequestSchema>;
+export type RestRequestSchemaType = z.infer<typeof restRequestSchemaBase>;

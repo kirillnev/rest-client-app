@@ -1,4 +1,3 @@
-// restRequestSchema.ts
 import { z } from 'zod';
 import { TFunction } from 'i18next';
 
@@ -35,7 +34,6 @@ export const createRestRequestSchema = (t: TFunction) =>
       }
     });
 
-// ✅ Базовая схема без переводов (для типа)
 export const restRequestSchemaBase = z.object({
   method: z.enum(['GET', 'POST', 'PUT', 'DELETE', 'PATCH']),
   url: z.string().url(),
@@ -49,5 +47,4 @@ export const restRequestSchemaBase = z.object({
   body: z.string(),
 });
 
-// 💡 Тип можно использовать в useForm
 export type RestRequestSchemaType = z.infer<typeof restRequestSchemaBase>;
