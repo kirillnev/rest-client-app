@@ -9,7 +9,9 @@ jest.mock('@/components/auth/RequireAuth', () => ({
 }));
 
 jest.mock('next/dynamic', () => () => {
-  const MockHistory = () => <div data-testid="history-section">HistorySection</div>;
+  const MockHistory = () => (
+    <div data-testid="history-section">HistorySection</div>
+  );
   return MockHistory;
 });
 
