@@ -6,6 +6,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-container">
+        {/* Слева — GitHub-ссылки */}
         <div className="github-links">
           <Link
             href="https://github.com/kirillnev"
@@ -33,22 +34,28 @@ const Footer = () => {
           </Link>
         </div>
 
-        <span>© {new Date().getFullYear()} REST Client</span>
+        {/* По центру — Копирайт */}
+        <div className="footer-copy">
+          <span>© {new Date().getFullYear()} REST Client</span>
+        </div>
 
-        <Link
-          href="https://rs.school/courses/reactjs"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="course-link"
-        >
-          <Image
-            src="/rss-logo.svg"
-            alt="Course Logo"
-            width={40}
-            height={40}
-            className="course-logo"
-          />
-        </Link>
+        {/* Справа — Логотип RS */}
+        <div className="footer-logo">
+          <Link
+            href="https://rs.school/courses/reactjs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="course-link"
+          >
+            <Image
+              src="/rss-logo.svg"
+              alt="Course Logo"
+              width={40}
+              height={40}
+              className="course-logo"
+            />
+          </Link>
+        </div>
       </div>
     </footer>
   );

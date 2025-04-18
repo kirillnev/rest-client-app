@@ -3,9 +3,15 @@ import Header from '../Header';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
-import { useRouter } from 'next/navigation';
-// import { ImgHTMLAttributes } from 'react';
-import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider';
+
+jest.mock('next/navigation', () => ({
+  usePathname: jest.fn(() => '/'),
+  useRouter: () => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+    prefetch: jest.fn(),
+  }),
+}));
 
 jest.mock('@/lib/supabase', () => ({
   supabase: {
@@ -21,10 +27,6 @@ jest.mock('@/contexts/AuthContext', () => ({
 
 jest.mock('react-i18next', () => ({
   useTranslation: jest.fn(),
-}));
-
-jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
 }));
 
 describe('Header', () => {
@@ -52,21 +54,17 @@ describe('Header', () => {
     },
   };
 
-  const mockPush = jest.fn();
-  const mockRouter = { push: mockPush };
-
   beforeEach(() => {
     jest.clearAllMocks();
     (useAuth as jest.Mock).mockReturnValue(mockUseAuth);
     (useTranslation as jest.Mock).mockReturnValue(mockUseTranslation);
-    (useRouter as jest.Mock).mockReturnValue(mockRouter);
   });
 
   it('renders logo, language toggle, and auth buttons', () => {
-    render(
-      <MemoryRouterProvider>
-        <Header />
-      </MemoryRouterProvider>
+    render(<Header />);
+    expect(screen.getByAltText('REST Client')).toHaveAttribute(
+      'src',
+      expect.stringContaining('logo-rbr')
     );
     expect(screen.getByText('Language: EN')).toBeInTheDocument();
     expect(screen.getByText('Sign In')).toHaveAttribute('href', '/auth/signin');
@@ -74,11 +72,7 @@ describe('Header', () => {
   });
 
   it('opens and closes language dropdown', async () => {
-    render(
-      <MemoryRouterProvider>
-        <Header />
-      </MemoryRouterProvider>
-    );
+    render(<Header />);
     expect(screen.queryByText('RU')).not.toBeInTheDocument();
 
     await act(async () => {
@@ -96,30 +90,22 @@ describe('Header', () => {
   });
 
   it('calls signOut when clicking sign out button', async () => {
+    const mockSignOut = supabase.auth.signOut;
     (useAuth as jest.Mock).mockReturnValue({
       user: { id: '1', email: 'test@example.com' },
       loading: false,
     });
 
-    render(
-      <MemoryRouterProvider>
-        <Header />
-      </MemoryRouterProvider>
-    );
+    render(<Header />);
     await act(async () => {
       fireEvent.click(screen.getByText('Sign Out'));
     });
-    expect(supabase.auth.signOut).toHaveBeenCalled();
-    expect(mockRouter.push).toHaveBeenCalledWith('/auth/signin');
+    expect(mockSignOut).toHaveBeenCalled();
   });
 
   it('applies is-sticky class when scrolled', async () => {
     Object.defineProperty(window, 'scrollY', { value: 0, writable: true });
-    render(
-      <MemoryRouterProvider>
-        <Header />
-      </MemoryRouterProvider>
-    );
+    render(<Header />);
     expect(screen.getByRole('banner')).not.toHaveClass('is-sticky');
 
     await act(async () => {

@@ -1,21 +1,18 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import Loading from '@/components/Loading';
-import Nav from '@/components/Nav';
 import RequireAuth from '@/components/auth/RequireAuth';
+import Loading from '@/components/Loading';
 
-const VariablesComponent = dynamic(() => import('@/components/Variables'), {
+const Variables = dynamic(() => import('@/components/Variables'), {
   loading: () => <Loading />,
+  ssr: false,
 });
 
 export default function VariablesPage() {
   return (
     <RequireAuth>
-      <main className="welcome-main">
-        <VariablesComponent />
-        <Nav />
-      </main>
+      <Variables />
     </RequireAuth>
   );
 }

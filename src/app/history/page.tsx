@@ -1,21 +1,18 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import Loading from '@/components/Loading';
-import Nav from '@/components/Nav';
 import RequireAuth from '@/components/auth/RequireAuth';
+import Loading from '@/components/Loading';
 
-const History = dynamic(() => import('@/components/History'), {
+const HistorySection = dynamic(() => import('@/components/History/History'), {
   loading: () => <Loading />,
+  ssr: false,
 });
 
 export default function HistoryPage() {
   return (
     <RequireAuth>
-      <main className="welcome-main">
-        <History />
-        <Nav />
-      </main>
+      <HistorySection />
     </RequireAuth>
   );
 }

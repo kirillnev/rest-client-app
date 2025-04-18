@@ -1,21 +1,18 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import Loading from '@/components/Loading';
-import Nav from '@/components/Nav';
 import RequireAuth from '@/components/auth/RequireAuth';
+import Loading from '@/components/Loading';
 
 const RestClient = dynamic(() => import('@/components/RestClient'), {
   loading: () => <Loading />,
+  ssr: false,
 });
 
-export default function RestPage() {
+export default function ClientPage() {
   return (
     <RequireAuth>
-      <main className="welcome-main">
-        <RestClient />
-        <Nav />
-      </main>
+      <RestClient />
     </RequireAuth>
   );
 }

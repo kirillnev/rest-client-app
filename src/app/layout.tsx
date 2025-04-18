@@ -9,6 +9,13 @@ import { getServerLanguage } from '@/i18n/getServerLanguage';
 
 export const dynamic = 'force-dynamic';
 
+export const metadata = {
+  title: 'RBrains REST Client',
+  icons: {
+    icon: '/favicon.png',
+  },
+};
+
 export default async function RootLayout({
   children,
 }: {
@@ -20,6 +27,7 @@ export default async function RootLayout({
   return (
     <html lang={lng}>
       <body className="layout-body">
+        <div className="corner-decoration" />
         <AuthProvider>
           <I18nProvider
             initialI18nStore={i18n.services.resourceStore.data}

@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import Loading from '@/components/Loading';
 
 type Props = {
   children: React.ReactNode;
@@ -19,7 +20,7 @@ export default function RequireAuth({ children }: Props) {
   }, [user, loading, router]);
 
   if (loading || !user) {
-    return <h2 className="error-message">Loading...</h2>;
+    return <Loading />;
   }
 
   return <>{children}</>;

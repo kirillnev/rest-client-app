@@ -6,7 +6,7 @@ jest.mock('next/dynamic', () => ({
   __esModule: true,
   default: jest.fn((loader, options) => {
     const Component = () => {
-      const Loading = options.loading;
+      const Loading = options?.loading ?? (() => null);
       return (
         <>
           <div data-testid="variables">Variables Component</div>
@@ -26,38 +26,27 @@ jest.mock('@/components/auth/RequireAuth', () => ({
   ),
 }));
 
-jest.mock('@/components/Nav', () => ({
-  __esModule: true,
-  default: () => <nav data-testid="nav">Navigation</nav>,
-}));
-
 jest.mock('@/components/Loading', () => ({
   __esModule: true,
   default: () => <div data-testid="loading">Loading...</div>,
 }));
 
 describe('VariablesPage Component', () => {
-  it('renders all components including dynamic import', () => {
+  it('renders the RequireAuth wrapper and the dynamic Variables component', () => {
     render(<VariablesPage />);
 
     expect(screen.getByTestId('auth-wrapper')).toBeInTheDocument();
     expect(screen.getByTestId('variables')).toBeInTheDocument();
-    expect(screen.getByTestId('nav')).toBeInTheDocument();
     expect(screen.getByTestId('loading')).toBeInTheDocument();
   });
 
-  it('has correct main element class', () => {
-    render(<VariablesPage />);
-    expect(screen.getByRole('main')).toHaveClass('welcome-main');
-  });
-
-  it('properly sets up dynamic import', async () => {
+  it('sets up dynamic import correctly with loading component', async () => {
     const { default: dynamic } = await import('next/dynamic');
     const mockedDynamic = dynamic as jest.Mock;
     expect(dynamic).toHaveBeenCalled();
 
-    const call = mockedDynamic.mock.calls[0];
-    expect(call[0]).toBeInstanceOf(Function);
-    expect(typeof call[1].loading).toBe('function');
+    const [loader, options] = mockedDynamic.mock.calls[0];
+    expect(typeof loader).toBe('function');
+    expect(typeof options.loading).toBe('function');
   });
 });

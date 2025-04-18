@@ -16,7 +16,7 @@ export const SignInForm = () => {
 
       <div className="form-group">
         <input type="email" placeholder="Email" {...register('email')} />
-        {errors.email && <p style={{ color: 'red' }}>{errors.email.message}</p>}
+        <p className="form-error">{errors.email?.message || '\u00A0'}</p>
       </div>
 
       <div className="form-group">
@@ -25,9 +25,7 @@ export const SignInForm = () => {
           placeholder="Password"
           {...register('password')}
         />
-        {errors.password && (
-          <p style={{ color: 'red' }}>{errors.password.message}</p>
-        )}
+        <p className="form-error">{errors.password?.message || '\u00A0'}</p>
       </div>
 
       {authError && <p style={{ color: 'red' }}>{authError}</p>}
