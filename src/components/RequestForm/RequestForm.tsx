@@ -11,7 +11,7 @@ import '../RestClient/rest-client.css';
 
 type Props = {
   form: UseFormReturn<RestRequest>;
-  onSubmit: (data: RestRequest) => Promise<void>;
+  onSubmit: (data: RestRequest) => void;
   isLoading: boolean;
 };
 

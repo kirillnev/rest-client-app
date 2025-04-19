@@ -13,7 +13,7 @@ jest.mock('next/dynamic', () => () => {
   return MockRestClient;
 });
 
-import ClientPage from '../client/page';
+import ClientPage from '../client/[[...params]]/page';
 
 describe('ClientPage', () => {
   it('renders RestClient inside RequireAuth', () => {

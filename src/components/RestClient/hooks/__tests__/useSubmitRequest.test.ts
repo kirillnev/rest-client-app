@@ -1,83 +1,48 @@
 import { renderHook, act } from '@testing-library/react';
 import { useSubmitRequest } from '../useSubmitRequest';
-import { useRouter } from 'next/navigation';
-import { buildRestUrl, sendRequestRaw } from '@/utils/requestUtils';
-import { saveToHistory } from '@/utils/localStorageUtils';
 import { RestRequest } from '@/types';
 
+const push = jest.fn();
+
 jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
+  useRouter: () => ({
+    push,
+  }),
 }));
 
 jest.mock('@/utils/requestUtils', () => ({
-  buildRestUrl: jest.fn(),
-  sendRequestRaw: jest.fn(),
+  buildRestUrl: jest.fn(() => '/mock-url'),
 }));
 
 jest.mock('@/utils/localStorageUtils', () => ({
   saveToHistory: jest.fn(),
 }));
 
-const mockRouterPush = jest.fn();
-const mockSetIsLoading = jest.fn();
-const mockSetError = jest.fn();
-const mockSetResponseData = jest.fn();
-const mockSetResponseStatus = jest.fn();
-
-const props = {
-  setIsLoading: mockSetIsLoading,
-  setError: mockSetError,
-  setResponseData: mockSetResponseData,
-  setResponseStatus: mockSetResponseStatus,
-};
-
 const mockData: RestRequest = {
-  method: 'GET',
+  method: 'POST',
   url: 'https://example.com',
   headers: [],
-  body: '',
+  body: '{"key":"value"}',
   bodyType: 'json',
 };
 
-beforeEach(() => {
-  (useRouter as jest.Mock).mockReturnValue({ push: mockRouterPush });
-  jest.clearAllMocks();
-});
+test('saves to history and redirects', () => {
+  const { result } = renderHook(() => useSubmitRequest());
 
-test('successful request', async () => {
-  const response = { status: 200, body: { ok: true } };
-  (buildRestUrl as jest.Mock).mockReturnValue('/url');
-  (sendRequestRaw as jest.Mock).mockResolvedValue(response);
-
-  const { result } = renderHook(() => useSubmitRequest(props));
-
-  await act(async () => {
-    await result.current(mockData);
+  act(() => {
+    result.current(mockData);
   });
 
-  expect(mockSetIsLoading).toHaveBeenCalledWith(true);
-  expect(mockSetError).toHaveBeenCalledWith(null);
-  expect(mockSetResponseData).toHaveBeenCalledWith(null);
-  expect(mockSetResponseStatus).toHaveBeenCalledWith(null);
-  expect(mockRouterPush).toHaveBeenCalledWith('/url');
-  expect(sendRequestRaw).toHaveBeenCalledWith(mockData);
-  expect(mockSetResponseStatus).toHaveBeenCalledWith(200);
-  expect(mockSetResponseData).toHaveBeenCalledWith({ ok: true });
-  expect(saveToHistory).toHaveBeenCalledWith(expect.objectContaining(mockData));
-  expect(mockSetIsLoading).toHaveBeenLastCalledWith(false);
-});
+  const { saveToHistory } = require('@/utils/localStorageUtils');
+  const { buildRestUrl } = require('@/utils/requestUtils');
 
-test('handles request error', async () => {
-  const error = new Error('fail');
-  (buildRestUrl as jest.Mock).mockReturnValue('/url');
-  (sendRequestRaw as jest.Mock).mockRejectedValue(error);
+  expect(saveToHistory).toHaveBeenCalledWith(
+    expect.objectContaining({
+      ...mockData,
+      createdAt: expect.any(Number),
+    })
+  );
 
-  const { result } = renderHook(() => useSubmitRequest(props));
-
-  await act(async () => {
-    await result.current(mockData);
-  });
-
-  expect(mockSetError).toHaveBeenCalledWith('fail');
-  expect(mockSetIsLoading).toHaveBeenLastCalledWith(false);
+  expect(buildRestUrl).toHaveBeenCalledWith(mockData, '/client');
+  expect(push).toHaveBeenCalledWith('/mock-url');
 });
