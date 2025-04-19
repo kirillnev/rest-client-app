@@ -102,7 +102,8 @@
   "validation": {
     "url": "Ungültiges URL-Format",
     "headerKey": "Ungültiger Header-Name",
-    "invalidJson": "Ungültiges JSON"
+    "invalidJson": "Ungültiges JSON",
+    "bodyNotAllowed": "Ein Body ist bei GET- oder HEAD-Anfragen nicht erlaubt"
   },
   "response": {
     "title": "Antwort",

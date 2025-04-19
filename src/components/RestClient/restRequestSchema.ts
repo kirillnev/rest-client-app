@@ -32,6 +32,14 @@ export const getRestRequestSchema = (t: TFunction) =>
           });
         }
       }
+
+      if (['GET', 'HEAD'].includes(data.method) && data.body.trim() !== '') {
+        ctx.addIssue({
+          path: ['body'],
+          code: z.ZodIssueCode.custom,
+          message: t('validation.bodyNotAllowed'),
+        });
+      }
     });
 
 export type RestRequestSchemaType = z.infer<

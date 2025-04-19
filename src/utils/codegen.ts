@@ -59,7 +59,9 @@ export const generateCode = async (
     url: request.url,
     method: request.method,
     header: headers,
-    body: new sdk.RequestBody({ mode: 'raw', raw: request.body }),
+    body: request.body
+      ? new sdk.RequestBody({ mode: 'raw', raw: request.body })
+      : undefined,
   });
 
   return await convertRequestToCode(postmanRequest, language);
