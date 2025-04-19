@@ -62,7 +62,10 @@ export const sendRequest = async (request: RestRequest) => {
 
 export const buildRestUrl = (data: RestRequest, prefix = ''): string => {
   const { method, url, body, bodyType, headers } = data;
-  const bodyStr = bodyType === 'json' ? JSON.stringify(JSON.parse(body)) : body;
+  const bodyStr =
+    bodyType === 'json' && body.trim()
+      ? JSON.stringify(JSON.parse(body))
+      : body;
   const base64Url = encodeBase64(url);
   const base64Body = encodeBase64(bodyStr);
   const methodUpper = method.toUpperCase();
