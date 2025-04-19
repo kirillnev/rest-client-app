@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { TFunction } from 'i18next';
 
-export const createRestRequestSchema = (t: TFunction) =>
+export const getRestRequestSchema = (t: TFunction) =>
   z
     .object({
       method: z.enum(['GET', 'POST', 'PUT', 'DELETE', 'PATCH']),
@@ -34,17 +34,6 @@ export const createRestRequestSchema = (t: TFunction) =>
       }
     });
 
-export const restRequestSchemaBase = z.object({
-  method: z.enum(['GET', 'POST', 'PUT', 'DELETE', 'PATCH']),
-  url: z.string().url(),
-  headers: z.array(
-    z.object({
-      key: z.string().trim(),
-      value: z.string().trim(),
-    })
-  ),
-  bodyType: z.enum(['text', 'json']),
-  body: z.string(),
-});
-
-export type RestRequestSchemaType = z.infer<typeof restRequestSchemaBase>;
+export type RestRequestSchemaType = z.infer<
+  ReturnType<typeof getRestRequestSchema>
+>;

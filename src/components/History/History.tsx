@@ -31,7 +31,7 @@ const History = () => {
               {new Date(item.createdAt).toLocaleString()}
             </span>
             <Link
-              href={buildRestUrl(item)}
+              href={buildRestUrl(item, '/client')}
               className="history-link"
               data-testid={`history-link-${item.createdAt}`}
             >

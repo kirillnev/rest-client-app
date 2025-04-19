@@ -1,60 +1,78 @@
-import { renderHook, act } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 import { useRestClient } from '../useRestClient';
-import { useRequestInitializer } from '@/components/RestClient/hooks/useRequestInitializer';
-import { useSubmitRequest } from '@/components/RestClient/hooks/useSubmitRequest';
 import { RestRequest } from '@/types';
 
-jest.mock('react-hook-form', () => {
-  const actual = jest.requireActual('react-hook-form');
-  return {
-    ...actual,
-    useForm: jest.fn(() => ({
-      setValue: jest.fn(),
-      getValues: jest.fn(),
-      watch: jest.fn(),
-      reset: jest.fn(),
-      trigger: jest.fn(),
-      clearErrors: jest.fn(),
-      setError: jest.fn(),
-      handleSubmit: jest.fn(),
-      formState: {},
-    })),
-  };
-});
+const mockRequest: RestRequest = {
+  method: 'GET',
+  url: 'https://test.com',
+  headers: [],
+  body: '',
+  bodyType: 'text',
+};
 
-jest.mock('@/components/RestClient/hooks/useRequestInitializer', () => ({
-  useRequestInitializer: jest.fn(),
+const mockForm = {
+  getValues: jest.fn(),
+  setValue: jest.fn(),
+  watch: jest.fn(),
+  handleSubmit: jest.fn(),
+  reset: jest.fn(),
+  formState: { errors: {} },
+};
+
+const mockOnSubmit = jest.fn();
+
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key: string) => key }),
+}));
+
+jest.mock('@/components/RestClient/hooks/useDecodedRequestParams', () => ({
+  useDecodedRequestParams: () => mockRequest,
+}));
+
+jest.mock('@/components/RestClient/hooks/useFormInitializer', () => ({
+  useFormInitializer: jest.fn(() => mockForm),
+}));
+
+jest.mock('@/components/RestClient/hooks/useGetResponse', () => ({
+  useGetResponse: jest.fn(),
 }));
 
 jest.mock('@/components/RestClient/hooks/useSubmitRequest', () => ({
-  useSubmitRequest: jest.fn(),
+  useSubmitRequest: () => mockOnSubmit,
 }));
 
-const mockSubmit = jest.fn();
-
-beforeEach(() => {
-  (useRequestInitializer as jest.Mock).mockImplementation(() => {});
-  (useSubmitRequest as jest.Mock).mockReturnValue(mockSubmit);
-  jest.clearAllMocks();
-});
-
-test('initializes and returns expected values', async () => {
+test('returns expected shape and calls hooks with correct params', () => {
   const { result } = renderHook(() => useRestClient());
 
-  expect(result.current.isLoading).toBe(false);
-  expect(result.current.error).toBe(null);
-  expect(result.current.responseStatus).toBe(null);
-  expect(result.current.responseData).toBe(null);
-  expect(result.current.onSubmit).toBe(mockSubmit);
-  expect(useRequestInitializer).toHaveBeenCalled();
-  expect(useSubmitRequest).toHaveBeenCalled();
-});
+  expect(result.current).toEqual(
+    expect.objectContaining({
+      form: mockForm,
+      isLoading: false,
+      error: null,
+      responseStatus: null,
+      responseData: null,
+      onSubmit: mockOnSubmit,
+    })
+  );
 
-test('submit updates state', async () => {
-  const { result } = renderHook(() => useRestClient());
-  await act(async () => {
-    await result.current.onSubmit({} as RestRequest);
-  });
+  const {
+    useFormInitializer,
+  } = require('@/components/RestClient/hooks/useFormInitializer');
+  const {
+    useGetResponse,
+  } = require('@/components/RestClient/hooks/useGetResponse');
 
-  expect(mockSubmit).toHaveBeenCalled();
+  expect(useFormInitializer).toHaveBeenCalledWith(
+    expect.objectContaining({ request: mockRequest })
+  );
+
+  expect(useGetResponse).toHaveBeenCalledWith(
+    expect.objectContaining({
+      request: mockRequest,
+      setIsLoading: expect.any(Function),
+      setError: expect.any(Function),
+      setResponseData: expect.any(Function),
+      setResponseStatus: expect.any(Function),
+    })
+  );
 });
