@@ -1,31 +1,31 @@
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { signInSchema } from '@/schemas/signInSchema';
+import { getSignInSchema, SignInSchemaType } from '@/schemas/signInSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import type { AuthError } from '@supabase/supabase-js';
-import { z } from 'zod';
 import { useState } from 'react';
-
-export type SignInFormData = z.infer<typeof signInSchema>;
+import { useTranslation } from 'react-i18next';
 
 export const useSignIn = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const [authError, setAuthError] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignInFormData>({
-    resolver: zodResolver(signInSchema),
+  } = useForm<SignInSchemaType>({
+    resolver: zodResolver(getSignInSchema(t)),
   });
 
-  const onSubmit = async (data: SignInFormData) => {
+  const onSubmit = async (data: SignInSchemaType) => {
     const { email, password } = data;
 
-    const { error: supabaseError }: { error: AuthError | null } =
-      await supabase.auth.signInWithPassword({ email, password });
+    const { error: supabaseError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
     if (supabaseError) {
       setAuthError(supabaseError.message);

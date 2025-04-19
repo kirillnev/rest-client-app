@@ -1,8 +1,10 @@
 'use client';
 
 import { useSignUp } from '@/components/auth/hooks/useSignUp';
+import { useTranslation } from 'react-i18next';
 
 export const SignUpForm = () => {
+  const { t } = useTranslation();
   const { register, handleSubmit, onSubmit, errors, authError } = useSignUp();
 
   return (
@@ -12,17 +14,21 @@ export const SignUpForm = () => {
       className="form-container"
       role="form"
     >
-      <h2>Sign Up</h2>
+      <h2>{t('auth.signUp')}</h2>
 
       <div className="form-group">
-        <input type="email" placeholder="Email" {...register('email')} />
+        <input
+          type="email"
+          placeholder={t('auth.emailPlaceholder')}
+          {...register('email')}
+        />
         <p className="form-error">{errors.email?.message || '\u00A0'}</p>
       </div>
 
       <div className="form-group">
         <input
           type="password"
-          placeholder="Password"
+          placeholder={t('auth.passwordPlaceholder')}
           {...register('password')}
         />
         <p className="form-error">{errors.password?.message || '\u00A0'}</p>
@@ -31,7 +37,7 @@ export const SignUpForm = () => {
       <div className="form-group">
         <input
           type="password"
-          placeholder="Confirm Password"
+          placeholder={t('auth.confirmPasswordPlaceholder')}
           {...register('confirmPassword')}
         />
         <p className="form-error">
@@ -41,14 +47,15 @@ export const SignUpForm = () => {
 
       <div className="form-group">
         <label>
-          <input type="checkbox" {...register('agreement')} />I agree to the
+          <input type="checkbox" {...register('agreement')} />
+          {t('auth.agreementLabel')}{' '}
           <a
             href="/terms"
             target="_blank"
             rel="noopener noreferrer"
             className="terms-link"
           >
-            terms
+            {t('auth.termsLink')}
           </a>
         </label>
         <p className="form-error">{errors.agreement?.message || '\u00A0'}</p>
@@ -56,7 +63,7 @@ export const SignUpForm = () => {
 
       {authError && <p style={{ color: 'red' }}>{authError}</p>}
 
-      <button type="submit">Sign Up</button>
+      <button type="submit">{t('auth.signUp')}</button>
     </form>
   );
 };

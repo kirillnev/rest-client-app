@@ -6,6 +6,7 @@ import { useRequestForm } from './hooks/useRequestForm';
 import MethodUrlBlock from './MethodUrlBlock';
 import HeadersBlock from './HeadersBlock';
 import BodyBlock from './BodyBlock';
+import { useTranslation } from 'react-i18next';
 import '../RestClient/rest-client.css';
 
 type Props = {
@@ -15,13 +16,14 @@ type Props = {
 };
 
 const RequestForm = ({ form, onSubmit, isLoading }: Props) => {
+  const { t } = useTranslation();
   const { register, formState, handleSubmit } = form;
   const { fields, append, remove, watchedBodyType, handlePrettify } =
     useRequestForm(form);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="rest-client-form">
-      <h2>Rest Client</h2>
+      <h2>{t('request.form.title')}</h2>
       <fieldset disabled={isLoading}>
         <MethodUrlBlock register={register} errors={formState.errors} />
         <HeadersBlock
@@ -37,7 +39,9 @@ const RequestForm = ({ form, onSubmit, isLoading }: Props) => {
           watchedBodyType={watchedBodyType}
           handlePrettify={handlePrettify}
         />
-        <button type="submit">{isLoading ? 'Sending...' : 'Send'}</button>
+        <button type="submit">
+          {isLoading ? t('request.form.sending') : t('request.form.send')}
+        </button>
       </fieldset>
     </form>
   );

@@ -1,8 +1,10 @@
 'use client';
 
 import { useSignIn } from '@/components/auth/hooks/useSignIn';
+import { useTranslation } from 'react-i18next';
 
 export const SignInForm = () => {
+  const { t } = useTranslation();
   const { register, handleSubmit, onSubmit, errors, authError } = useSignIn();
 
   return (
@@ -12,17 +14,21 @@ export const SignInForm = () => {
       className="form-container"
       role="form"
     >
-      <h2>Sign In</h2>
+      <h2>{t('auth.signIn')}</h2>
 
       <div className="form-group">
-        <input type="email" placeholder="Email" {...register('email')} />
+        <input
+          type="email"
+          placeholder={t('auth.emailPlaceholder')}
+          {...register('email')}
+        />
         <p className="form-error">{errors.email?.message || '\u00A0'}</p>
       </div>
 
       <div className="form-group">
         <input
           type="password"
-          placeholder="Password"
+          placeholder={t('auth.passwordPlaceholder')}
           {...register('password')}
         />
         <p className="form-error">{errors.password?.message || '\u00A0'}</p>
@@ -30,7 +36,7 @@ export const SignInForm = () => {
 
       {authError && <p style={{ color: 'red' }}>{authError}</p>}
 
-      <button type="submit">Sign In</button>
+      <button type="submit">{t('auth.signIn')}</button>
     </form>
   );
 };

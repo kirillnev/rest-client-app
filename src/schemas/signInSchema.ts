@@ -1,13 +1,15 @@
 import { z } from 'zod';
+import { TFunction } from 'i18next';
 
-export const signInSchema = z.object({
-  email: z.string().email('Invalid email format'),
-  password: z
-    .string()
-    .min(8, 'Password must be at least 8 characters')
-    .regex(/[A-Za-z]/, 'Password must contain a letter')
-    .regex(/\d/, 'Password must contain a digit')
-    .regex(/[@$!%*?&]/, 'Password must contain a special character'),
-});
+export const getSignInSchema = (t: TFunction) =>
+  z.object({
+    email: z.string().email(t('auth.validation.email')),
+    password: z
+      .string()
+      .min(8, t('auth.validation.password.min'))
+      .regex(/[A-Za-z]/, t('auth.validation.password.letter'))
+      .regex(/\d/, t('auth.validation.password.digit'))
+      .regex(/[@$!%*?&]/, t('auth.validation.password.special')),
+  });
 
-export type SignInSchemaType = z.infer<typeof signInSchema>;
+export type SignInSchemaType = z.infer<ReturnType<typeof getSignInSchema>>;

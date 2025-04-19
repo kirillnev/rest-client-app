@@ -12,6 +12,19 @@ jest.mock('@/lib/supabase', () => ({
   },
 }));
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      const map: Record<string, string> = {
+        'auth.signIn': 'Sign In',
+        'auth.emailPlaceholder': 'Email',
+        'auth.passwordPlaceholder': 'Password',
+      };
+      return map[key] || key;
+    },
+  }),
+}));
+
 describe('SignInForm (with react-hook-form)', () => {
   const mockHandleSubmit = jest.fn((fn: () => void) => () => fn());
   const mockOnSubmit = jest.fn();
@@ -31,11 +44,9 @@ describe('SignInForm (with react-hook-form)', () => {
   it('renders form inputs and submit button', () => {
     render(<SignInForm />);
 
-    expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /sign in/i })
-    ).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Email')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Sign In' })).toBeInTheDocument();
   });
 
   it('calls handleSubmit and onSubmit on form submit', () => {
@@ -53,16 +64,16 @@ describe('SignInForm (with react-hook-form)', () => {
       handleSubmit: mockHandleSubmit,
       onSubmit: mockOnSubmit,
       errors: {
-        email: { message: 'Invalid email' },
-        password: { message: 'Password is too short' },
+        email: { message: 'Invalid email format' },
+        password: { message: 'Password too short' },
       },
       authError: null,
     });
 
     render(<SignInForm />);
 
-    expect(screen.getByText(/invalid email/i)).toBeInTheDocument();
-    expect(screen.getByText(/password is too short/i)).toBeInTheDocument();
+    expect(screen.getByText('Invalid email format')).toBeInTheDocument();
+    expect(screen.getByText('Password too short')).toBeInTheDocument();
   });
 
   it('displays auth error from backend', () => {
@@ -75,6 +86,6 @@ describe('SignInForm (with react-hook-form)', () => {
     });
 
     render(<SignInForm />);
-    expect(screen.getByText(/invalid credentials/i)).toBeInTheDocument();
+    expect(screen.getByText('Invalid credentials')).toBeInTheDocument();
   });
 });

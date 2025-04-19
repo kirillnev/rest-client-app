@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { ResponseDataType } from '@/types';
+import { useTranslation } from 'react-i18next';
 import '../RestClient/rest-client.css';
 
 type Props = {
@@ -10,15 +11,16 @@ type Props = {
 };
 
 const ResponseBlock = ({ status, data }: Props) => {
+  const { t } = useTranslation();
   const content = data ? JSON.stringify(data, null, 2) : null;
 
   return (
     <div className="response-block">
-      <h3 className="generated-code-title">Response</h3>
+      <h3 className="generated-code-title">{t('response.title')}</h3>
       <textarea
         className="response-textarea"
         rows={12}
-        value={`Status: ${status}\n\n${content ?? ''}`}
+        value={`${t('response.status')}: ${status}\n\n${content ?? ''}`}
         readOnly
       />
     </div>

@@ -2,12 +2,28 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { SignUpForm } from '@/components/auth/SignUpForm';
 import { useSignUp } from '@/components/auth/hooks/useSignUp';
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      const translations: Record<string, string> = {
+        'auth.signUp': 'Sign Up',
+        'auth.emailPlaceholder': 'Email',
+        'auth.passwordPlaceholder': 'Password',
+        'auth.confirmPasswordPlaceholder': 'Confirm Password',
+        'auth.agreementLabel': 'I agree to the',
+        'auth.termsLink': 'terms',
+      };
+      return translations[key] || key;
+    },
+  }),
+}));
+
 jest.mock('@/components/auth/hooks/useSignUp');
 
 jest.mock('@/lib/supabase', () => ({
   supabase: {
     auth: {
-      signInWithPassword: jest.fn(),
+      signUp: jest.fn(),
     },
   },
 }));
@@ -31,15 +47,11 @@ describe('SignUpForm (RHF)', () => {
   it('renders all input fields and the submit button', () => {
     render(<SignUpForm />);
 
-    expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/^password$/i)).toBeInTheDocument();
-    expect(
-      screen.getByPlaceholderText(/confirm password/i)
-    ).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Email')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Confirm Password')).toBeInTheDocument();
     expect(screen.getByRole('checkbox')).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /sign up/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Sign Up' })).toBeInTheDocument();
   });
 
   it('calls handleSubmit and onSubmit on form submit', () => {
@@ -65,12 +77,10 @@ describe('SignUpForm (RHF)', () => {
 
     render(<SignUpForm />);
 
-    expect(screen.getByText(/invalid email/i)).toBeInTheDocument();
-    expect(screen.getByText(/too short/i)).toBeInTheDocument();
-    expect(screen.getByText(/passwords do not match/i)).toBeInTheDocument();
-    expect(
-      screen.getByText(/you must agree to the terms/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText('Invalid email')).toBeInTheDocument();
+    expect(screen.getByText('Too short')).toBeInTheDocument();
+    expect(screen.getByText('Passwords do not match')).toBeInTheDocument();
+    expect(screen.getByText('You must agree to the terms')).toBeInTheDocument();
   });
 
   it('displays backend auth error message', () => {
@@ -83,6 +93,6 @@ describe('SignUpForm (RHF)', () => {
     });
 
     render(<SignUpForm />);
-    expect(screen.getByText(/email already exists/i)).toBeInTheDocument();
+    expect(screen.getByText('Email already exists')).toBeInTheDocument();
   });
 });

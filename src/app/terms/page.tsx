@@ -1,69 +1,51 @@
+'use client';
+import { useTranslation } from 'react-i18next';
 import './terms.css';
 
 export default function TermsPage() {
+  const { t } = useTranslation();
+
   return (
     <main className="terms-main">
-      <h1 className="terms-title">Terms and Conditions</h1>
-      <p>Last updated: April 15, 2025</p>
+      <h1 className="terms-title">{t('terms.title')}</h1>
+      <p>{t('terms.lastUpdated')}</p>
 
       <div className="terms-section">
-        <h2>1. Purpose</h2>
-        <p>
-          This application is intended for testing and learning how REST APIs
-          work. It is not designed for use in production environments or
-          handling sensitive data.
-        </p>
+        <h2>{t('terms.sections.purpose.title')}</h2>
+        <p>{t('terms.sections.purpose.text')}</p>
       </div>
 
       <div className="terms-section">
-        <h2>2. User Responsibility</h2>
+        <h2>{t('terms.sections.responsibility.title')}</h2>
         <ul>
-          <li>
-            You are responsible for all activities performed through your
-            account.
-          </li>
-          <li>
-            You agree not to misuse the app, send malicious requests, or violate
-            any laws.
-          </li>
-          <li>
-            Data you send to external APIs via this client is not stored or
-            monitored.
-          </li>
+          {(
+            t('terms.sections.responsibility.items', {
+              returnObjects: true,
+            }) as string[]
+          ).map((item, index) => (
+            <li key={index}>{item}</li>
+          ))}
         </ul>
       </div>
 
       <div className="terms-section">
-        <h2>3. No Warranty</h2>
-        <p>
-          This app is provided as is without any warranties of any kind. We do
-          not guarantee uninterrupted or error-free operation.
-        </p>
+        <h2>{t('terms.sections.warranty.title')}</h2>
+        <p>{t('terms.sections.warranty.text')}</p>
       </div>
 
       <div className="terms-section">
-        <h2>4. Limitation of Liability</h2>
-        <p>
-          Under no circumstances shall the developers be held liable for any
-          damages resulting from the use of this application.
-        </p>
+        <h2>{t('terms.sections.liability.title')}</h2>
+        <p>{t('terms.sections.liability.text')}</p>
       </div>
 
       <div className="terms-section">
-        <h2>5. Changes</h2>
-        <p>
-          We may update these terms at any time. Changes will be posted on this
-          page. Continued use of the app after changes indicates your
-          acceptance.
-        </p>
+        <h2>{t('terms.sections.changes.title')}</h2>
+        <p>{t('terms.sections.changes.text')}</p>
       </div>
 
       <div className="terms-section">
-        <h2>6. Contact</h2>
-        <p>
-          For any questions regarding these terms, please contact the
-          development team via GitHub.
-        </p>
+        <h2>{t('terms.sections.contact.title')}</h2>
+        <p>{t('terms.sections.contact.text')}</p>
       </div>
     </main>
   );

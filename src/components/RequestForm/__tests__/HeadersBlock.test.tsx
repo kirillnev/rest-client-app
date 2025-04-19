@@ -4,6 +4,19 @@ import type { FieldErrors, UseFormRegister } from 'react-hook-form';
 import type { RestRequest } from '@/types';
 import type { FieldArrayWithId } from 'react-hook-form';
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      const map: Record<string, string> = {
+        'request.headers.keyPlaceholder': 'Key',
+        'request.headers.valuePlaceholder': 'Value',
+        'request.headers.addButton': 'Add header',
+      };
+      return map[key] || key;
+    },
+  }),
+}));
+
 const fields: FieldArrayWithId<RestRequest, 'headers', 'id'>[] = [
   { id: '1', key: '', value: '' },
   { id: '2', key: '', value: '' },
@@ -26,10 +39,10 @@ const setup = (errors: FieldErrors<RestRequest> = {}) => {
 
 test('renders headers inputs and add button', () => {
   setup();
-  expect(screen.getAllByPlaceholderText(/Key/i)).toHaveLength(2);
-  expect(screen.getAllByPlaceholderText(/Value/i)).toHaveLength(2);
-  expect(screen.getAllByRole('button', { name: '' })).toHaveLength(2); // remove buttons
-  expect(screen.getByText(/Add header/i)).toBeInTheDocument();
+  expect(screen.getAllByPlaceholderText('Key')).toHaveLength(2);
+  expect(screen.getAllByPlaceholderText('Value')).toHaveLength(2);
+  expect(screen.getAllByRole('button', { name: '' })).toHaveLength(2);
+  expect(screen.getByText('Add header')).toBeInTheDocument();
 });
 
 test('calls remove on remove button click', () => {
@@ -40,7 +53,7 @@ test('calls remove on remove button click', () => {
 
 test('calls append on Add header click', () => {
   setup();
-  fireEvent.click(screen.getByText(/Add header/i));
+  fireEvent.click(screen.getByText('Add header'));
   expect(appendMock).toHaveBeenCalledWith({ key: '', value: '' });
 });
 
@@ -49,5 +62,5 @@ test('shows error message if header key has error', () => {
     headers: [{ key: { type: 'manual', message: 'Key is required' } }, {}],
   };
   setup(errors);
-  expect(screen.getByText(/Key is required/i)).toBeInTheDocument();
+  expect(screen.getByText('Key is required')).toBeInTheDocument();
 });
