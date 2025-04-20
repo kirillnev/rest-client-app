@@ -1,27 +1,16 @@
 import i18next from 'i18next';
-import fs from 'fs';
-import path from 'path';
 import { i18nConfig } from './i18nConfig';
 import type { Resource } from 'i18next';
+import en from '../../locales/en/translation.json';
+import ru from '../../locales/ru/translation.json';
+import de from '../../locales/de/translation.json';
 
-const LANGUAGES = ['en', 'ru', 'de'];
-const NAMESPACE = 'translation';
-
-export const getResources = () => {
-  const resources: Resource = {};
-
-  for (const lang of LANGUAGES) {
-    const filePath = path.resolve(
-      process.cwd(),
-      `src/locales/${lang}/${NAMESPACE}.json`
-    );
-    const fileContent = fs.readFileSync(filePath, 'utf-8');
-    resources[lang] = {
-      [NAMESPACE]: JSON.parse(fileContent),
-    };
-  }
-
-  return resources;
+export const getResources = (): Resource => {
+  return {
+    en: { translation: en },
+    ru: { translation: ru },
+    de: { translation: de },
+  };
 };
 
 export async function initI18nServer(language: string) {
