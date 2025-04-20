@@ -91,7 +91,8 @@
   },
   "history": {
     "empty": "You haven't executed any requests yet.",
-    "clearButton": "Clear History"
+    "clearButton": "Clear History",
+    "goToClient": "Go to REST Client"
   },
   "request": {
     "body": {

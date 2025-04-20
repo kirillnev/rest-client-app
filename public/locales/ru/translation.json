@@ -91,7 +91,8 @@
   },
   "history": {
     "empty": "Вы ещё не отправляли запросы.",
-    "clearButton": "Очистить историю"
+    "clearButton": "Очистить историю",
+    "goToClient": "На страницу REST Client"
   },
   "request": {
     "body": {
