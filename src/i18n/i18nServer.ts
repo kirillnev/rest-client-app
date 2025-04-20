@@ -13,7 +13,7 @@ export const getResources = () => {
   for (const lang of LANGUAGES) {
     const filePath = path.resolve(
       process.cwd(),
-      `src/locales/${lang}/${NAMESPACE}.json`
+      `locales/${lang}/${NAMESPACE}.json`
     );
     const fileContent = fs.readFileSync(filePath, 'utf-8');
     resources[lang] = {
