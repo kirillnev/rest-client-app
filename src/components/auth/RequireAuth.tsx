@@ -15,7 +15,7 @@ export default function RequireAuth({ children }: Props) {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.replace('/auth/signin');
+      router.replace('/');
     }
   }, [user, loading, router]);
 
