@@ -34,7 +34,7 @@ describe('RequireAuth', () => {
     expect(screen.getByTestId('loading')).toBeInTheDocument();
   });
 
-  it('redirects to /auth/signin if not authenticated', async () => {
+  it('redirects to / if not authenticated', async () => {
     (useAuth as jest.Mock).mockReturnValue({
       user: null,
       loading: false,
@@ -47,7 +47,7 @@ describe('RequireAuth', () => {
     );
 
     await waitFor(() => {
-      expect(mockReplace).toHaveBeenCalledWith('/auth/signin');
+      expect(mockReplace).toHaveBeenCalledWith('/');
     });
   });
 
