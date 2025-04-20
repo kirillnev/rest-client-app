@@ -16,3 +16,8 @@ export type RestRequest = {
 export type HistoryItem = RestRequest & { createdAt: number };
 
 export type ResponseDataType = string | Record<string, unknown> | null;
+
+export type Variable = {
+  key: string;
+  value: string;
+};
