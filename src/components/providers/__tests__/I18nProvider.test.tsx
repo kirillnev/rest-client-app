@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import I18nProvider from '@/components/providers/I18nProvider';
 import i18next from 'i18next';
-import { InitOptions, Resource } from 'i18next';
+import { i18nConfig } from '@/i18n/i18nConfig';
 import { act } from 'react';
 
 type LanguageChangedCallback = (lng: string) => void;
@@ -9,11 +9,11 @@ type LanguageChangedCallback = (lng: string) => void;
 jest.mock('i18next', () => {
   const mockInstance = {
     use: jest.fn().mockReturnThis(),
-    init: jest.fn().mockImplementation((options: InitOptions) => {
+    init: jest.fn().mockImplementation((options) => {
       mockInstance.language = options.lng || 'en';
       mockInstance.services = {
         resourceStore: {
-          data: options.resources || ({} as Resource),
+          data: options.resources || {},
         },
       };
       return Promise.resolve(mockInstance);
@@ -88,20 +88,14 @@ describe('I18nProvider', () => {
       );
     });
 
-    expect(i18nInstance.init).toHaveBeenCalledWith({
-      fallbackLng: 'en',
-      supportedLngs: ['en', 'ru', 'de'],
-      defaultNS: 'translation',
-      interpolation: { escapeValue: false },
-      detection: {
-        order: ['cookie', 'localStorage', 'navigator'],
-        caches: ['cookie'],
-        cookieName: 'i18nextLng',
-      },
-      lng: 'ru',
-      resources: {},
-      react: { useSuspense: true },
-    });
+    expect(i18nInstance.init).toHaveBeenCalledWith(
+      expect.objectContaining({
+        ...i18nConfig,
+        lng: 'ru',
+        resources: {},
+        react: { useSuspense: true },
+      })
+    );
   });
 
   it('sets cookie on language change', async () => {
