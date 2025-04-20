@@ -1,0 +1,177 @@
+{
+  "welcome": {
+    "title": "Willkommen",
+    "back": "Willkommen zurück, {{username}}!",
+    "mainPage": "Startseite",
+    "text": "RBrains REST Client – ein intelligentes, leichtgewichtiges und modernes Tool zum Testen von APIs, entwickelt vom RBrains-Team im Rahmen eines Bildungsprojekts.",
+    "features": [
+      "🔐 Authentifizierung & Autorisierung",
+      "🌐 REST-Client mit Methode, Headern und Body",
+      "📜 Codegenerierung in mehreren Sprachen",
+      "📂 Verlauf und smarte Variablen"
+    ],
+    "loggedInText": [
+      "RBrains REST Client – ein intelligentes, leichtgewichtiges und modernes Tool zum Testen von APIs, entwickelt vom RBrains-Team im Rahmen eines Bildungsprojekts.",
+      "",
+      "Im Hauptmenü findest du folgende Bereiche:",
+      "",
+      "🌐 <strong>REST-Client</strong> – erstelle und sende HTTP-Anfragen, setze Header, passe den Body an und sieh dir detaillierte Antworten an.",
+      "📂 <strong>Verlauf</strong> – behalte den Überblick über vorherige Anfragen und führe sie bei Bedarf erneut aus.",
+      "🧩 <strong>Variablen</strong> – verwalte wiederverwendbare Variablen zur dynamischen Konfiguration deiner Anfragen.",
+      "",
+      "Diese Tools helfen dir, effizienter mit RESTful APIs zu arbeiten – alles an einem Ort."
+    ]
+  },
+  "nav": {
+    "restClient": "REST-Client",
+    "history": "Verlauf",
+    "variables": "Variablen",
+    "language": "Sprache"
+  },
+  "globalErrors": {
+    "unhandledRejection": "Etwas ist schiefgelaufen. Bitte versuchen Sie es später erneut.",
+    "runtimeError": "Ein Fehler ist in der Anwendung aufgetreten."
+  },
+  "errorBoundary": {
+    "toast": "Fehler in der Anwendung",
+    "title": "Etwas ist schiefgelaufen.",
+    "description": "Bitte versuchen Sie, die Seite neu zu laden.",
+    "console": "ErrorBoundary hat einen Fehler abgefangen"
+  },
+  "errorTest": {
+    "title": "Fehlertestseite",
+    "throwJsError": "Globaler JavaScript-Fehler",
+    "unhandledRejection": "Nicht abgefangene Promise-Ablehnung",
+    "networkError": "Netzwerkfehler",
+    "httpError": "HTTP-Fehler",
+    "otherError": "Fehler",
+    "buttons": {
+      "reactCrash": "React-Komponente zum Absturz bringen",
+      "jsError": "JS-Fehler (throw)",
+      "unhandledRejection": "Nicht abgefangene Promise-Ablehnung",
+      "network": "Netzwerkfehler (fetch zu nicht existierender Domain)",
+      "http": "HTTP 404 Fehler"
+    }
+  },
+  "auth": {
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "signOut": "Abmelden",
+    "emailPlaceholder": "E-Mail",
+    "passwordPlaceholder": "Passwort",
+    "confirmPasswordPlaceholder": "Passwort bestätigen",
+    "agreementLabel": "Ich stimme den",
+    "termsLink": "Nutzungsbedingungen zu",
+    "validation": {
+      "email": "Ungültiges E-Mail-Format",
+      "password": {
+        "min": "Das Passwort muss mindestens 8 Zeichen lang sein",
+        "letter": "Das Passwort muss mindestens einen Buchstaben enthalten",
+        "digit": "Das Passwort muss mindestens eine Ziffer enthalten",
+        "special": "Das Passwort muss mindestens ein Sonderzeichen enthalten"
+      },
+      "agreement": "Sie müssen den Bedingungen zustimmen"
+    }
+  },
+  "error": {
+    "notFound": {
+      "subtitle": "Seite nicht gefunden",
+      "text": "Möglicherweise hast du einem falschen Link gefolgt.",
+      "back": "Zurück zur Startseite"
+    },
+    "alert": {
+      "title": "Fehler:",
+      "tryAgain": "Erneut versuchen",
+      "close": "Schließen"
+    }
+  },
+  "codegen": {
+    "error": "Fehler beim Generieren des Codes",
+    "notEnoughData": "Nicht genügend Daten zum Generieren des Codes"
+  },
+  "generatedCode": {
+    "title": "Generierter Code",
+    "languageLabel": "Sprache:"
+  },
+  "history": {
+    "empty": "Du hast noch keine Anfragen ausgeführt.",
+    "clearButton": "Verlauf löschen",
+    "goToClient": "Zum REST-Client"
+  },
+  "request": {
+    "body": {
+      "type": {
+        "text": "Text",
+        "json": "JSON"
+      },
+      "prettify": "Formatieren",
+      "placeholder": "Anfrage-Body"
+    },
+    "headers": {
+      "keyPlaceholder": "Schlüssel",
+      "valuePlaceholder": "Wert",
+      "addButton": "Header hinzufügen"
+    },
+    "form": {
+      "title": "REST-Client",
+      "send": "Senden",
+      "sending": "Wird gesendet..."
+    }
+  },
+  "variables": {
+    "title": "Variablen",
+    "name": "Name",
+    "value": "Wert",
+    "actions": "Aktionen",
+    "namePlaceholder": "Variablenname",
+    "valuePlaceholder": "Variablenwert",
+    "addButton": "Variable hinzufügen",
+    "deleteButton": "Löschen",
+    "noVariables": "Noch keine Variablen"
+  },
+  "validation": {
+    "url": "Ungültiges URL-Format",
+    "headerKey": "Ungültiger Header-Name",
+    "invalidJson": "Ungültiges JSON",
+    "bodyNotAllowed": "Ein Body ist bei GET- oder HEAD-Anfragen nicht erlaubt"
+  },
+  "response": {
+    "title": "Antwort",
+    "status": "Status",
+    "error": "Fehler"
+  },
+  "terms": {
+    "title": "Nutzungsbedingungen",
+    "lastUpdated": "Letzte Aktualisierung: 15. April 2025",
+    "sections": {
+      "purpose": {
+        "title": "1. Zweck",
+        "text": "Diese Anwendung dient zum Testen und Erlernen von REST-APIs. Sie ist nicht für produktive Umgebungen oder den Umgang mit sensiblen Daten vorgesehen."
+      },
+      "responsibility": {
+        "title": "2. Verantwortung der Nutzer",
+        "items": [
+          "Du bist für alle Aktivitäten verantwortlich, die über dein Konto durchgeführt werden.",
+          "Du verpflichtest dich, die App nicht zu missbrauchen, keine bösartigen Anfragen zu senden und keine Gesetze zu verletzen.",
+          "Daten, die über diesen Client an externe APIs gesendet werden, werden weder gespeichert noch überwacht."
+        ]
+      },
+      "warranty": {
+        "title": "3. Keine Gewährleistung",
+        "text": "Diese App wird ohne jegliche Gewährleistung bereitgestellt. Es wird keine unterbrechungsfreie oder fehlerfreie Funktion garantiert."
+      },
+      "liability": {
+        "title": "4. Haftungsbeschränkung",
+        "text": "Die Entwickler haften unter keinen Umständen für Schäden, die durch die Nutzung dieser Anwendung entstehen."
+      },
+      "changes": {
+        "title": "5. Änderungen",
+        "text": "Wir können diese Bedingungen jederzeit ändern. Änderungen werden auf dieser Seite veröffentlicht. Die fortgesetzte Nutzung der App gilt als Zustimmung zu den Änderungen."
+      },
+      "contact": {
+        "title": "6. Kontakt",
+        "text": "Bei Fragen zu diesen Bedingungen kontaktiere bitte das Entwicklerteam über GitHub."
+      }
+    }
+  }
+}

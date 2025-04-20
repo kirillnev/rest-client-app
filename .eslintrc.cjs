@@ -38,4 +38,13 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
   },
   ignorePatterns: ['dist', '.eslintrc.js'],
+
+  overrides: [
+    {
+      files: ['**/*.test.ts', '**/*.test.tsx'],
+      rules: {
+        '@typescript-eslint/no-require-imports': 'off',
+      },
+    },
+  ],
 };

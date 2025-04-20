@@ -1,0 +1,155 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: transparent;
+  color: #ffffff;
+  width: 100%;
+  z-index: 1000;
+  transition: all 0.2s ease-in-out;
+  box-shadow: none;
+  background-color: #1f2937;
+  padding: 0.5rem 0;
+}
+
+.header.is-sticky {
+  background-color: #1f2937;
+  padding: 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+  margin: 0 auto;
+  gap: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.button-container {
+  gap: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+@media (max-width: 540px) {
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 2rem;
+  }
+
+  .header.is-sticky {
+    padding: 0.5rem 0;
+  }
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+}
+
+.logo-image {
+  object-fit: contain;
+}
+
+.lang-toggle {
+  position: relative;
+}
+
+.auth-button,
+.lang-button {
+  background-color: #4b5563;
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: fit-content;
+}
+
+.auth-button:hover,
+.lang-button:hover {
+  background-color: #374151;
+}
+
+.lang-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #4b5563;
+  border: 1px solid #4b5563;
+  border-radius: 4px;
+  list-style: none;
+  padding: 0.5rem 0;
+  margin: 0;
+  z-index: 20;
+  min-width: 60px;
+}
+
+.lang-item {
+  width: 100%;
+}
+
+.lang-option {
+  background: none;
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1rem;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.lang-option:hover {
+  background-color: #374151;
+}
+
+.lang-option.selected {
+  background-color: #374151;
+  font-weight: bold;
+}
+
+.auth-section {
+  display: flex;
+  gap: 1rem;
+}
+
+.dropdown-arrow {
+  font-size: 0.8rem;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+}
+
+.nav-menu-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.nav-menu-link:hover {
+  color: #d1d5db;
+}
+
+.nav-menu-link.active {
+  color: #f3f4f6;
+  border-bottom: 2px solid #d1d5db;
+  padding-bottom: 2px;
+  font-weight: 600;
+}

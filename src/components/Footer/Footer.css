@@ -1,0 +1,63 @@
+/* app/components/Footer.css */
+
+.footer {
+  background-color: #111827;
+  color: #ffffff;
+  padding: 1rem 0;
+  width: 100%;
+}
+
+.footer-container {
+  margin: 0 auto;
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.github-links {
+  display: flex;
+  gap: 1rem;
+  flex: 1;
+}
+
+.footer-logo {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.footer-copy {
+  flex: 0 0 auto;
+  text-align: center;
+}
+
+.github-link {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.github-link:hover {
+  color: #d1d5db;
+}
+
+.course-link {
+  display: flex;
+  align-items: center;
+  transition: opacity 0.3s ease;
+}
+
+.course-link:hover {
+  opacity: 0.8;
+}
+
+.course-logo {
+  object-fit: contain;
+}
