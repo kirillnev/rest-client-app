@@ -32,15 +32,15 @@ describe('i18nServer', () => {
       expect(resources).toEqual(mockTranslations);
       expect(fs.readFileSync).toHaveBeenCalledTimes(3);
       expect(fs.readFileSync).toHaveBeenCalledWith(
-        expect.stringContaining('src/locales/en/translation.json'),
+        expect.stringContaining('locales/en/translation.json'),
         'utf-8'
       );
       expect(fs.readFileSync).toHaveBeenCalledWith(
-        expect.stringContaining('src/locales/ru/translation.json'),
+        expect.stringContaining('locales/ru/translation.json'),
         'utf-8'
       );
       expect(fs.readFileSync).toHaveBeenCalledWith(
-        expect.stringContaining('src/locales/de/translation.json'),
+        expect.stringContaining('locales/de/translation.json'),
         'utf-8'
       );
     });
