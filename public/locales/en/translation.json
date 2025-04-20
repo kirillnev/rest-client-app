@@ -28,6 +28,31 @@
     "variables": "Variables",
     "language": "Language"
   },
+  "globalErrors": {
+    "unhandledRejection": "Something went wrong. Please try again later.",
+    "runtimeError": "An error occurred in the application."
+  },
+  "errorBoundary": {
+    "toast": "Application error",
+    "title": "Something went wrong.",
+    "description": "Please try reloading the page.",
+    "console": "ErrorBoundary caught an error"
+  },
+  "errorTest": {
+    "title": "Error Testing Page",
+    "throwJsError": "Global JavaScript Error",
+    "unhandledRejection": "Unhandled Promise Rejection",
+    "networkError": "Network Error",
+    "httpError": "HTTP Error",
+    "otherError": "Error",
+    "buttons": {
+      "reactCrash": "Crash React Component",
+      "jsError": "JS Error (throw)",
+      "unhandledRejection": "Unhandled Promise Rejection",
+      "network": "Network Error (fetch to nonexistent domain)",
+      "http": "HTTP 404 Error"
+    }
+  },
   "auth": {
     "signIn": "Sign In",
     "signUp": "Sign Up",

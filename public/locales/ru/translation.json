@@ -28,6 +28,31 @@
     "variables": "Переменные",
     "language": "Язык"
   },
+  "globalErrors": {
+    "unhandledRejection": "Что-то пошло не так. Пожалуйста, попробуйте позже.",
+    "runtimeError": "В приложении произошла ошибка."
+  },
+  "errorBoundary": {
+    "toast": "Ошибка в приложении",
+    "title": "Что-то пошло не так.",
+    "description": "Попробуйте перезагрузить страницу.",
+    "console": "ErrorBoundary поймал ошибку"
+  },
+  "errorTest": {
+    "title": "Страница тестирования ошибок",
+    "throwJsError": "Глобальная ошибка JavaScript",
+    "unhandledRejection": "Необработанный Promise",
+    "networkError": "Ошибка сети",
+    "httpError": "HTTP ошибка",
+    "otherError": "Ошибка",
+    "buttons": {
+      "reactCrash": "Сломать React-компонент",
+      "jsError": "JS ошибка (throw)",
+      "unhandledRejection": "Unhandled Promise rejection",
+      "network": "Ошибка сети (fetch к несуществующему домену)",
+      "http": "HTTP 404 ошибка"
+    }
+  },
   "auth": {
     "signIn": "Войти",
     "signUp": "Зарегистрироваться",
