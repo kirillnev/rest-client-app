@@ -5,15 +5,16 @@ import { toast } from 'react-toastify';
 import '@testing-library/jest-dom';
 
 jest.mock('react-i18next', () => ({
-  withTranslation: () => <P extends object>(Component: React.ComponentType<P>) => {
-    const WrappedComponent = (props: P) => (
-      <Component {...props} t={(key: string) => key} />
-    );
-    WrappedComponent.displayName = `withTranslation(${Component.displayName || Component.name || 'Component'})`;
-    return WrappedComponent;
-  },
+  withTranslation:
+    () =>
+    <P extends object>(Component: React.ComponentType<P>) => {
+      const WrappedComponent = (props: P) => (
+        <Component {...props} t={(key: string) => key} />
+      );
+      WrappedComponent.displayName = `withTranslation(${Component.displayName || Component.name || 'Component'})`;
+      return WrappedComponent;
+    },
 }));
-
 
 jest.mock('react-toastify', () => ({
   toast: {

@@ -31,15 +31,19 @@ describe('HistoryPage - with HistorySection loaded', () => {
 describe('HistoryPage - shows loading state', () => {
   jest.resetModules();
 
-  jest.mock('next/dynamic', () => (
-    importFunc: () => Promise<{ default: ComponentType }>,
-    options: { loading: () => JSX.Element }
-  ) => {
-    const LoadingWrapper = () => (
-      <div data-testid="loading-wrapper">{options.loading()}</div>
-    );
-    return LoadingWrapper;
-  });
+  jest.mock(
+    'next/dynamic',
+    () =>
+      (
+        importFunc: () => Promise<{ default: ComponentType }>,
+        options: { loading: () => JSX.Element }
+      ) => {
+        const LoadingWrapper = () => (
+          <div data-testid="loading-wrapper">{options.loading()}</div>
+        );
+        return LoadingWrapper;
+      }
+  );
 
   const HistoryPage = require('../history/page').default;
 
