@@ -18,7 +18,7 @@ class ErrorBoundary extends React.Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('ErrorBoundary поймал ошибку:', error, errorInfo);
+    console.error(this.props.t('errorBoundary.console'), error, errorInfo);
 
     if (this.props.t) {
       toast.error(`${this.props.t('errorBoundary.toast')}: ${error.message}`);

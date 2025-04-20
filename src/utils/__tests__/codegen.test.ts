@@ -47,5 +47,5 @@ test('returns fallback on missing data', async () => {
   };
 
   const result = await generateCode(invalidRequest, 'curl');
-  expect(result).toBe('Not enough data to generate code.');
+  expect(result).toBe('');
 });

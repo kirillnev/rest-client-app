@@ -89,6 +89,10 @@
     "title": "Generated Code",
     "languageLabel": "Language:"
   },
+  "codegen": {
+    "error": "Error generating code",
+    "notEnoughData": "Not enough data to generate code"
+  },
   "history": {
     "empty": "You haven't executed any requests yet.",
     "clearButton": "Clear History",

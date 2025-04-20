@@ -85,6 +85,10 @@
       "close": "Schließen"
     }
   },
+  "codegen": {
+    "error": "Fehler beim Generieren des Codes",
+    "notEnoughData": "Nicht genügend Daten zum Generieren des Codes"
+  },
   "generatedCode": {
     "title": "Generierter Code",
     "languageLabel": "Sprache:"
