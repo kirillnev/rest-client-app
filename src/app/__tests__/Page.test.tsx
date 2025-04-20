@@ -91,7 +91,7 @@ describe('Welcome Component', () => {
 
   it('shows loading fallback while suspended', () => {
     const Suspend = () => {
-      throw new Promise(() => {}); // заставляет Suspense отрисовать fallback
+      throw new Promise(() => {});
     };
 
     render(

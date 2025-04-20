@@ -14,6 +14,9 @@ const History = () => {
     return (
       <div className="history-container empty" data-testid="history-empty">
         {t('history.empty')}
+        <Link href="/client" className="go-client-link">
+          {t('history.goToClient')}
+        </Link>
       </div>
     );
   }

@@ -48,7 +48,7 @@ export const generateCode = async (
   language: LanguageKey
 ): Promise<string> => {
   if (!request.method || !request.url) {
-    return 'Not enough data to generate code.';
+    return '';
   }
 
   const headers = request.headers

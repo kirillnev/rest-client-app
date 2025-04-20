@@ -6,6 +6,7 @@ import I18nProvider from '@/components/providers/I18nProvider';
 import { ReactNode } from 'react';
 import { initI18nServer } from '@/i18n/i18nServer';
 import { getServerLanguage } from '@/i18n/getServerLanguage';
+import ClientErrorBoundaryWrapper from '@/components/providers/ClientErrorBoundaryWrapper';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,9 +34,11 @@ export default async function RootLayout({
             initialI18nStore={i18n.services.resourceStore.data}
             initialLanguage={lng}
           >
-            <Header />
-            <div className="main-content">{children}</div>
-            <Footer />
+            <ClientErrorBoundaryWrapper>
+              <Header />
+              <div className="main-content">{children}</div>
+              <Footer />
+            </ClientErrorBoundaryWrapper>
           </I18nProvider>
         </AuthProvider>
       </body>

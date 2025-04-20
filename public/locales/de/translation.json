@@ -28,6 +28,31 @@
     "variables": "Variablen",
     "language": "Sprache"
   },
+  "globalErrors": {
+    "unhandledRejection": "Etwas ist schiefgelaufen. Bitte versuchen Sie es später erneut.",
+    "runtimeError": "Ein Fehler ist in der Anwendung aufgetreten."
+  },
+  "errorBoundary": {
+    "toast": "Fehler in der Anwendung",
+    "title": "Etwas ist schiefgelaufen.",
+    "description": "Bitte versuchen Sie, die Seite neu zu laden.",
+    "console": "ErrorBoundary hat einen Fehler abgefangen"
+  },
+  "errorTest": {
+    "title": "Fehlertestseite",
+    "throwJsError": "Globaler JavaScript-Fehler",
+    "unhandledRejection": "Nicht abgefangene Promise-Ablehnung",
+    "networkError": "Netzwerkfehler",
+    "httpError": "HTTP-Fehler",
+    "otherError": "Fehler",
+    "buttons": {
+      "reactCrash": "React-Komponente zum Absturz bringen",
+      "jsError": "JS-Fehler (throw)",
+      "unhandledRejection": "Nicht abgefangene Promise-Ablehnung",
+      "network": "Netzwerkfehler (fetch zu nicht existierender Domain)",
+      "http": "HTTP 404 Fehler"
+    }
+  },
   "auth": {
     "signIn": "Anmelden",
     "signUp": "Registrieren",
@@ -60,13 +85,18 @@
       "close": "Schließen"
     }
   },
+  "codegen": {
+    "error": "Fehler beim Generieren des Codes",
+    "notEnoughData": "Nicht genügend Daten zum Generieren des Codes"
+  },
   "generatedCode": {
     "title": "Generierter Code",
     "languageLabel": "Sprache:"
   },
   "history": {
     "empty": "Du hast noch keine Anfragen ausgeführt.",
-    "clearButton": "Verlauf löschen"
+    "clearButton": "Verlauf löschen",
+    "goToClient": "Zum REST-Client"
   },
   "request": {
     "body": {
